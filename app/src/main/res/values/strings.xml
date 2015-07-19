@@ -3,11 +3,24 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="cheese_ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
-    cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian
-    bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber
-    cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese
-    the big cheese.</string>
+    <string name="cheese_ipsum">Jarlsberg</string>
     <string name="checkin">Checkin</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_note_list">NoteListActivity</string>
+
+
+    <string name="title_activity_note">NoteActivity</string>
+    <string name="note_title_hint">Enter a title for the note.</string>
+    <string name="note_title_label">Title</string>
+    <string name="note_details_label">Details</string>
+    <string name="note_solved_label">Completed?</string>
+    <string name="notes_title">Notes</string>
+    <string name="date_picker_title">Date:</string>
+    <string name="new_note">New Note</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="subtitle">Add to to-do list</string>
+    <string name="delete_note">Delete</string>
+    <string name="empty_list">To get started, create a New Note.</string>
+    <string name="userName">Abass</string>
 </resources>
