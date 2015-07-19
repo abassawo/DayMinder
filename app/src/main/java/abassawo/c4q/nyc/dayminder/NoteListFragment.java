@@ -31,8 +31,7 @@ public class NoteListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView rv = (RecyclerView) inflater.inflate(
-                R.layout.fragment_note_list, container, false);
+        RecyclerView rv = (RecyclerView) inflater.inflate(R.layout.fragment_note_list, container, false);
         setupRecyclerView(rv);
         ButterKnife.bind(this, rv);
         return rv;
