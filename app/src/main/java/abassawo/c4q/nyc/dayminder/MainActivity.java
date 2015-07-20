@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new FragAdapter(getSupportFragmentManager());
-        adapter.addFragment(new NoteListFragment(), "Today");
-        adapter.addFragment(new NoteListFragment(), "Ongoing");
-        adapter.addFragment(new NoteListFragment(), "Month View");
+        adapter.addFragment(new DayListFragment(), "Today");
+        adapter.addFragment(new GoalListFragment(), "Ongoing");
+        adapter.addFragment(new MonthViewFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
 
