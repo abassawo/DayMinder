@@ -8,12 +8,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 
 import butterknife.Bind;
@@ -23,34 +31,39 @@ import butterknife.ButterKnife;
  * Created by c4q-Abass on 7/19/15.
  */
 public class DayListFragment extends Fragment {
-    private ArrayList<Note> mNotes;
-    @Bind(R.id.DateTV_id)
-    TextView dateTV;
-    private Date mDate;
+    //@Bind(R.id.DateTV_id) TextView dateTV;
+    @Bind(R.id.listview) ListView dailyNoteLV;
+    public static Date mDate;
+    public static List<Note> mNotes;
+    private Note mNote;
+    private EditText mTitleField;
+    private Button mDateButton;
+    private Button mTimeButton;
 
+    private CheckBox mSolvedBox;
+    private ImageButton delButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day_list, container, false);
+        ButterKnife.bind(this, view);
         mDate = Calendar.getInstance().getTime();
 
-        String date = new SimpleDateFormat("EEE, MM-dd-yyyy").format(new Date());
+        Note c = new Note();
+        c.setTitle("Testing");
+        Note d = new Note();
+        d.setTitle("Another Note");
+
+        mNotes =  NotePad.get(getActivity()).getNotes();
+        //Add some Test Notes
+//        mNotes.add(c);
+//        mNotes.add(d);
 
 
-        Log.d("test", mDate.toString());
-        ButterKnife.bind(this, view);
-        dateTV.setText(date);
+        ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, mNotes);
+        dailyNoteLV.setAdapter(basicAdapter);
 
-
-        // mNotes = new ArrayList<>(); ///Testing this to see if it removes blank notes
-//        for (Note x : mNotes) {
-//            if ((x.getTitle().toString()).equals("")) {
-//                mNotes.remove(x);
-//            }
-//        }
-//        final ListView listView = (ListView) view.findViewById(R.id.listview);
-//        listView.setAdapter(customadapter);
 
         return view;
     }
@@ -59,6 +72,8 @@ public class DayListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
     }
+
+
 
 
 }

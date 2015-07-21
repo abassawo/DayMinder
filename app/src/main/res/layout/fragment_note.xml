@@ -1,13 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:paddingBottom="40dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/note_title_label"
-        style="?android:listSeparatorTextViewStyle" />
+
 
     <EditText
         android:id="@+id/note_title"

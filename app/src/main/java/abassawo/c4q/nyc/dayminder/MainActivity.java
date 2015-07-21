@@ -20,8 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -33,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.nav_view) NavigationView navigationView;
+    private DayListFragment dayListFragment;
     private FragAdapter adapter;
+    public static List<Note>mNotes;
+
 
 
     @Override
@@ -41,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mNotes = NotePad.get(this).getNotes();
+
+
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
@@ -61,26 +72,37 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-             showCreateNote();
-            }
+                if(viewpager.getCurrentItem() == 0){
+                    Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null);
+                    snackbar.show();
+                } else if (viewpager.getCurrentItem() == 1){
+                                    NoteFragment newFrag = getNewNoteFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
+                } else {
+                    Snackbar snackbar = Snackbar.make(view, "Add new items to your calendar", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null);
+                    snackbar.show();
+                }
+        }
         });
+
+
 
     }
 
-    public void showCreateNote() {
+    public NoteFragment getNewNoteFragment() {
         Note note = new Note();
+        UUID newID = note.getId();
+        NoteFragment newNoteFrag = NoteFragment.newInstance(newID);
+
         note.setTitle("");
         NotePad.get(getApplicationContext()).addNote(note);
-        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_layout, new NoteFragment());
-       // i.putExtra(NoteFragment.EXTRA_NOTE_ID, note.getId());
+        return newNoteFrag;
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-       // ViewGroup header;
-        //View view = getLayoutInflater().inflate(R.layout.nav_header, header);
-        //navigationView.addHeaderView(view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -103,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        String date = new SimpleDateFormat("EEE, MM-dd-yyyy").format(new Date());
+        getSupportActionBar().setSubtitle(date);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;

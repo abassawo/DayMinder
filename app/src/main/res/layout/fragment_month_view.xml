@@ -17,7 +17,17 @@
          android:layout_weight="1"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         android:background="#ff0288D1"></FrameLayout>
+         android:background="#ff0288D1">
+
+         <ListView
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/taskList">
+         </ListView>
+
+
+
+     </FrameLayout>
 
 
     </LinearLayout>
