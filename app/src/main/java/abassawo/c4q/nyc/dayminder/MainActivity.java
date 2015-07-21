@@ -35,7 +35,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 import java.util.zip.Inflater;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         tabLayout.setupWithViewPager(viewpager);
 
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
                     snackbar.show();
                 } else if (viewpager.getCurrentItem() == 1){
                     NoteFragment newFrag = getNewNoteFragment();
-                FragmentManager fm = getSupportFragmentManager();
-                 fm.popBackStack();
-                fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
+                    FragmentManager fm = getSupportFragmentManager();
+                    fm.popBackStack();
+                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
 
 
                 } else {
@@ -144,22 +147,17 @@ public class MainActivity extends AppCompatActivity {
                             .setAction("Action", null);
                     snackbar.show();
                 }
-        }
+
+            }
         });
 
 
 
+
+
+
     }
 
-    public NoteFragment getNewNoteFragment() {
-        Note note = new Note();
-        UUID newID = note.getId();
-        NoteFragment newNoteFrag = NoteFragment.newInstance(newID);
-
-        note.setTitle("");
-        NotePad.get(getApplicationContext()).addNote(note);
-        return newNoteFrag;
-    }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -180,6 +178,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new MonthViewFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
+
+    public NoteFragment getNewNoteFragment() {
+        Note note = new Note();
+        UUID newID = note.getId();
+        NoteFragment newNoteFrag = NoteFragment.newInstance(newID);
+
+        note.setTitle("");
+        NotePad.get(getApplicationContext()).addNote(note);
+        return newNoteFrag;
+    }
+
 
 
     @Override
