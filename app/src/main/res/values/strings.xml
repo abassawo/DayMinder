@@ -27,4 +27,6 @@
 
     <string name="motivationalText">The only happiness is productivity</string>
     <string name="goals_header_text">Ongoing Goals and Projects</string>
+    <string name="openDrawer">DayMinder</string>
+    <string name="closeDrawer">DayMinder</string>
 </resources>
