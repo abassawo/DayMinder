@@ -58,14 +58,29 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         tabLayout.setupWithViewPager(viewpager);
 
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-             showCreateNote();
+                if(viewpager.getCurrentItem() == 0){
+                    Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null);
+                    snackbar.show();
+                } else if (viewpager.getCurrentItem() == 1){
+                    NoteFragment newFrag = getNewNoteFragment();
+                    FragmentManager fm = getSupportFragmentManager();
+                    fm.popBackStack();
+                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
+
+
+                } else {
+                    Snackbar snackbar = Snackbar.make(view, "Add new items to your calendar", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null);
+                    snackbar.show();
+                }
             }
         });
+
 
     }
 
