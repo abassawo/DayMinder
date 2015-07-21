@@ -23,7 +23,10 @@
     <string name="delete_note">Delete</string>
     <string name="empty_list">To get started, create a New Note.</string>
     <string name="userName">Abass</string>
+    <string name="dateString"></string>
 
     <string name="motivationalText">The only happiness is productivity</string>
     <string name="goals_header_text">Ongoing Goals and Projects</string>
+    <string name="openDrawer">DayMinder</string>
+    <string name="closeDrawer">DayMinder</string>
 </resources>

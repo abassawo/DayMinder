@@ -15,11 +15,18 @@ public class Note {
     private static final String JSON_TITLE = "title";
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
+    private static final String JSON_LABEL_TAG = "label";
 
     private UUID mId;
     private String mTitle;
+
+    public String label = "|";   //Add new label tags to this string if they don't exist. can use | to search index.
+    //TODO=Incorporate color for labels.
+
+
     private Date mDate;
     private boolean mSolved;
+    private String mLabel;
 
     public Note() {
         // Generate unique identifier
@@ -32,6 +39,7 @@ public class Note {
         mTitle = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
         mSolved = json.getBoolean(JSON_SOLVED);
+       // mLabel = json.getString(JSON_LABEL_TAG);
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -40,6 +48,7 @@ public class Note {
         json.put(JSON_TITLE, mTitle);
         json.put(JSON_SOLVED, mSolved);
         json.put(JSON_DATE, mDate.getTime());
+       // json.put(JSON_LABEL_TAG, label);
         return json;
     }
 

@@ -1,6 +1,8 @@
 package abassawo.c4q.nyc.dayminder;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -11,21 +13,35 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import java.util.zip.Inflater;
+
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +51,27 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.nav_view) NavigationView navigationView;
+    private DayListFragment dayListFragment;
     private FragAdapter adapter;
+    public static List<Note>mNotes;
+
+    RecyclerView mRecyclerView;                           // Declaring RecyclerView
+    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
+    RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
+    DrawerLayout Drawer;                                  // Declaring DrawerLayout
+
+    private ActionBarDrawerToggle mDrawerToggle;
+
+
+//    @Override
+//    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+//        View view = navigationView.inflateHeaderView(R.layout.nav_header);
+//        int PROFILE = R.drawable.urbancommune;
+//
+//        navigationView.addHeaderView(view);
+//        return view;
+//    }
+
 
 
     @Override
@@ -43,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+
+        mNotes = NotePad.get(this).getNotes();
+
+
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
@@ -55,6 +97,31 @@ public class MainActivity extends AppCompatActivity {
         if (viewPager != null) {
             setupViewPager(viewPager);
         }
+
+        Drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
+
+        mDrawerToggle = new ActionBarDrawerToggle(this,Drawer,toolbar,R.string.openDrawer,R.string.closeDrawer){ //fixme fix the strings
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
+                // open I am not going to put anything here)
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                // Code here will execute once drawer is closed
+            }
+
+
+
+        }; // Drawer Toggle Object Made
+        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+        mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+
+
 
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -80,24 +147,19 @@ public class MainActivity extends AppCompatActivity {
                             .setAction("Action", null);
                     snackbar.show();
                 }
+
             }
         });
 
 
+
+
+
+
     }
 
-    public void showCreateNote() {
-        Note note = new Note();
-        note.setTitle("");
-        NotePad.get(getApplicationContext()).addNote(note);
-        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_layout, new NoteFragment());
-       // i.putExtra(NoteFragment.EXTRA_NOTE_ID, note.getId());
-    }
 
     private void setupDrawerContent(NavigationView navigationView) {
-       // ViewGroup header;
-        //View view = getLayoutInflater().inflate(R.layout.nav_header, header);
-        //navigationView.addHeaderView(view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -131,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        String date = new SimpleDateFormat("EEE, MM-dd-yyyy").format(new Date());
+        getSupportActionBar().setSubtitle(date);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
