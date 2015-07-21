@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -114,6 +116,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new MonthViewFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
+
+    public NoteFragment getNewNoteFragment() {
+        Note note = new Note();
+        UUID newID = note.getId();
+        NoteFragment newNoteFrag = NoteFragment.newInstance(newID);
+
+        note.setTitle("");
+        NotePad.get(getApplicationContext()).addNote(note);
+        return newNoteFrag;
+    }
+
 
 
     @Override
