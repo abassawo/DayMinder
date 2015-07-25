@@ -1,7 +1,13 @@
 package abassawo.c4q.nyc.dayminder;
 
+import android.content.ContentProvider;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -22,6 +28,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +39,7 @@ import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -80,9 +88,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        fetchCalendars();
+        fetchEvents();
+        updateEvent(255);
+
 
 
         mNotes = NotePad.get(this).getNotes();
+        for(Note x : mNotes){
+            if (x.getTitle().toString() == "") {
+                mNotes.remove(x);
+            }
+        }
 
 
         setSupportActionBar(toolbar);
@@ -132,10 +149,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(viewpager.getCurrentItem() == 0){
+                    fab.setVisibility(View.GONE);
+                } else {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+                if(viewpager.getCurrentItem() == 0){
+                    insertEvent("Testing");
                     Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
                             .setAction("Action", null);
                     snackbar.show();
                 } else if (viewpager.getCurrentItem() == 1){
+                    fab.setImageResource(R.drawable.ic_done);
                     NoteFragment newFrag = getNewNoteFragment();
                     FragmentManager fm = getSupportFragmentManager();
                     fm.popBackStack();
@@ -209,5 +234,85 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public void fetchCalendars(){
+        Uri uri = CalendarContract.Calendars.CONTENT_URI;
+        String[] columns = new String[]{
+                CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                CalendarContract.Calendars.CALENDAR_COLOR_KEY};
+
+        Cursor cursor =
+                getContentResolver().
+                        query(uri, columns, CalendarContract.Calendars.ACCOUNT_NAME + " = ?", new String[]{"abass.bayo@gmail.com"}, null); // = ? is for filtering. it means gimme only the calendars associated with that email
+
+        while(cursor.moveToNext()){
+            long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Calendars._ID));
+            String accountName = cursor.getString(1);
+            String displayName = cursor.getString(2);
+            String owner = cursor.getString(3);
+            Log.v("contentProvider", "ID: " + id +
+                    "accountName" + accountName +
+                    "displayName" + displayName +
+                    "owner" + owner);
+
+
+        }
+    }
+
+    public void fetchEvents(){
+        Uri uri = CalendarContract.Events.CONTENT_URI;
+        String[] columns = new String[] {
+                CalendarContract.Events._ID,
+                CalendarContract.Events.CALENDAR_ID,
+                CalendarContract.Events.ORGANIZER,
+                CalendarContract.Events.TITLE,
+                CalendarContract.Events.EVENT_LOCATION,
+                CalendarContract.Events.DESCRIPTION,
+                CalendarContract.Events.DTSTART,
+                CalendarContract.Events.DTEND,
+        };
+
+        String filter = CalendarContract.Events.CALENDAR_ID + " = ?";
+        String[] filterArgs = new String[]{"5"}; //PUT FILTERARGS #5INTO A CONSTANT.
+
+
+        String sortOrder = CalendarContract.Events.DTSTART + " DESC";
+
+        Cursor cursor = getContentResolver().query(uri, columns, filter, filterArgs, sortOrder);
+
+    }
+
+    public void insertEvent(String title){
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(2015, Calendar.JULY, 1, 22, 0);
+        long startMillis = startTime.getTimeInMillis();
+
+        Calendar endTime = Calendar.getInstance();
+        long endMillis = endTime.getTimeInMillis();
+
+
+        ContentValues values = new ContentValues();
+        //
+        values.put(CalendarContract.Events.TITLE, title);
+        values.put(CalendarContract.Events.DESCRIPTION, "additional test");
+
+        values.put(CalendarContract.Events.DTSTART, startMillis);
+        values.put(CalendarContract.Events.DTEND, endMillis);
+        values.put(CalendarContract.Events.CALENDAR_ID, 5);
+        values.put(CalendarContract.Events.EVENT_LOCATION, "LIC");
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/New York");
+         Uri uri =  getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+    }
+
+    public void updateEvent(long id){
+        id = 255;
+        ContentValues values = new ContentValues();
+        Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, id);
+
+    }
 
 }
+
+
+

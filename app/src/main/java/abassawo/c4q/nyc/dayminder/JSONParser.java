@@ -71,6 +71,34 @@ public class JSONParser {
 
     }
 
+    public ArrayList<JLabel> loadLabels()throws IOException, JSONException {
+        ArrayList<JLabel> labels = new ArrayList<JLabel>();
+        BufferedReader reader = null;
+        try {
+            // Open and read the file into a StringBuilder
+            InputStream in = mContext.openFileInput(mFileName);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                // Line breaks are omitted and irrelevant
+                jsonString.append(line);
+            }
+            // Parse the JSON using JSONTokener
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+            //Build the array of notes from JSONObjects
+            for (int i = 0; i < array.length(); i++) {
+                labels.add(new JLabel(array.getJSONObject(i).toString()));
+            }
+        } catch (FileNotFoundException e) {
+            // Ignore this one; it happens when starting fresh
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return labels;
+    }
+
 
     public ArrayList<Note> loadNotes() throws IOException, JSONException {
         ArrayList<Note> notes = new ArrayList<Note>();

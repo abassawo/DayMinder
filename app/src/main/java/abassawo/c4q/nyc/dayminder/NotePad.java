@@ -14,7 +14,16 @@ public class NotePad {
     private static final String FILENAME = "notes.json";
 
     private ArrayList<Note> mNotes;
+
+    public ArrayList<JLabel> getLabels() {
+        return mLabels;
+    }
+
+
+    private ArrayList<JLabel>mLabels;
     private JSONParser mSerializer;
+    private JLabel label;
+
 
     private static NotePad sNotePad;
     private Context mAppContext;
@@ -25,12 +34,12 @@ public class NotePad {
 
         try {
             mNotes = mSerializer.loadNotes();
+            mLabels = mSerializer.loadLabels();
         } catch (Exception e) {
             mNotes = new ArrayList<Note>();
-            Log.e(TAG, "Error loading notes: ", e);
+            Log.e(TAG, "Error loading labels: ", e);
         }
 
-        //CreateNotes(14);
     }
 
     public static NotePad get(Context c) {
@@ -77,11 +86,18 @@ public class NotePad {
     }
 
     private void CreateNotes(int count) {  //just for quick testing
-        for (int i=0; i < 100; i++) {
+        for (int i=0; i < count; i++) {
             Note c = new Note();
             c.setTitle("Note #" + i);
             c.setSolved(i %2 == 0); // Alternate ones are checked.
             mNotes.add(c);
+        }
+    }
+    private void CreateLabels(int count) {  //just for quick testing
+        for (int i=0; i < count; i++) {
+            JLabel c = new JLabel();
+            c.setTitle("Label" + i);
+            mLabels.add(c);
         }
     }
 }
