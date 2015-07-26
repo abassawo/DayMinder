@@ -148,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(viewpager.getCurrentItem() == 0){
-                    fab.setVisibility(View.GONE);
-                } else {
-                    fab.setVisibility(View.VISIBLE);
-                }
+//                if(viewpager.getCurrentItem() == 0){
+//                    fab.setVisibility(View.GONE);
+//                } else {
+//                    fab.setVisibility(View.VISIBLE);
+//                }
 
                 if(viewpager.getCurrentItem() == 0){
                     insertEvent("Testing");
@@ -160,11 +160,13 @@ public class MainActivity extends AppCompatActivity {
                             .setAction("Action", null);
                     snackbar.show();
                 } else if (viewpager.getCurrentItem() == 1){
-                    fab.setImageResource(R.drawable.ic_done);
-                    NoteFragment newFrag = getNewNoteFragment();
-                    FragmentManager fm = getSupportFragmentManager();
-                    fm.popBackStack();
-                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
+                    Intent editIntent = new Intent(MainActivity.this, NoteEditActivity.class);
+                    startActivity(editIntent);
+//                    fab.setImageResource(R.drawable.ic_done);
+//                    NoteFragment newFrag = getNewNoteFragment();
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    fm.popBackStack();
+//                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
 
 
                 } else {

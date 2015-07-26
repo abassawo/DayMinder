@@ -61,6 +61,7 @@ public class NoteFragment extends Fragment {
         mNote = NotePad.get(getActivity()).getNote(noteId);
 
 
+
         setHasOptionsMenu(true);
     }
 
@@ -68,7 +69,7 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_note, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit, container, false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (NavUtils.getParentActivityName(getActivity()) != null) {
@@ -111,7 +112,7 @@ public class NoteFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button)v.findViewById(R.id.note_time);
+        mTimeButton = (Button)v.findViewById(R.id.note_date);
         mTimeButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

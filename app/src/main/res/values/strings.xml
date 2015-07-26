@@ -29,4 +29,5 @@
     <string name="goals_header_text">Ongoing Goals and Projects</string>
     <string name="openDrawer">DayMinder</string>
     <string name="closeDrawer">DayMinder</string>
+    <string name="title_activity_note_edit">NoteEditActivity</string>
 </resources>
