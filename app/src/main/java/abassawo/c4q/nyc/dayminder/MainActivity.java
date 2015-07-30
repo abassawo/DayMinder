@@ -72,12 +72,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        fetchCalendars();
-        fetchEvents();
-        updateEvent(255);
-
-
+//
+//        fetchCalendars();
+//        fetchEvents();
+//        updateEvent(255);
 
         mNotes = NotePad.get(this).getNotes();
         for(Note x : mNotes){
@@ -85,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 mNotes.remove(x);
             }
         }
-
 
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();

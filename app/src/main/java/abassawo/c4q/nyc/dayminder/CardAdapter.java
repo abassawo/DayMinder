@@ -37,9 +37,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ContactViewHol
     public void onBindViewHolder(ContactViewHolder cardTitleViewHolder, int i) {
        Note ci = cardList.get(i);
         cardTitleViewHolder.vName.setText(ci.getTitle());
-//        contactViewHolder.vSurname.setText(ci.surname);
-//        contactViewHolder.vEmail.setText(ci.email);
-//        contactViewHolder.vTitle.setText(ci.name + " " + ci.surname);
     }
 
     @Override
