@@ -59,26 +59,11 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.nav_view) NavigationView navigationView;
-    private DayListFragment dayListFragment;
     private FragAdapter adapter;
     public static List<Note>mNotes;
-
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
-    RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
 
     private ActionBarDrawerToggle mDrawerToggle;
-
-
-//    @Override
-//    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-//        View view = navigationView.inflateHeaderView(R.layout.nav_header);
-//        int PROFILE = R.drawable.urbancommune;
-//
-//        navigationView.addHeaderView(view);
-//        return view;
-//    }
 
 
 
@@ -162,11 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 } else if (viewpager.getCurrentItem() == 1){
                     Intent editIntent = new Intent(MainActivity.this, NoteEditActivity.class);
                     startActivity(editIntent);
-//                    fab.setImageResource(R.drawable.ic_done);
-//                    NoteFragment newFrag = getNewNoteFragment();
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    fm.popBackStack();
-//                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
+
+                    fab.setImageResource(R.drawable.ic_done);
+                    NoteFragment newFrag = getNewNoteFragment();
+                    FragmentManager fm = getSupportFragmentManager();
+                    fm.popBackStack();
+                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
 
 
                 } else {
@@ -177,13 +163,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
     }
+
+
 
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -201,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new FragAdapter(getSupportFragmentManager());
         adapter.addFragment(new DayListFragment(), "Today");
-        adapter.addFragment(new GoalListFragment(), "Ongoing");
+        adapter.addFragment(new GoalCardsFragment(), "Ongoing");
         adapter.addFragment(new MonthViewFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }

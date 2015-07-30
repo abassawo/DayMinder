@@ -30,11 +30,6 @@ public class NoteDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(goalName);
-
-        loadBackdrop();
     }
 
     @Override
@@ -48,8 +43,8 @@ public class NoteDetailActivity extends AppCompatActivity {
     }
 
     private void loadBackdrop() {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(R.drawable.ic_action_add_group).centerCrop().into(imageView);
+       // final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+        //Glide.with(this).load(R.drawable.ic_action_add_group).centerCrop().into(imageView);
     }
 
     @Override

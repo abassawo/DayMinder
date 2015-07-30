@@ -49,21 +49,10 @@ public class DayListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_day_list, container, false);
         ButterKnife.bind(this, view);
         mDate = Calendar.getInstance().getTime();
-
-        Note c = new Note();
-        c.setTitle("Testing");
-        Note d = new Note();
-        d.setTitle("Another Note");
-
         mNotes =  NotePad.get(getActivity()).getNotes();
-        //Add some Test Notes
-//        mNotes.add(c);
-//        mNotes.add(d);
-
 
         ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, mNotes);
         dailyNoteLV.setAdapter(basicAdapter);
-
 
         return view;
     }

@@ -52,8 +52,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView item = (TextView) convertView.findViewById(R.id.label);
 
-        ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
-        delete.setOnClickListener(new OnClickListener() {
+        ImageView addtoDayView = (ImageView) convertView.findViewById(R.id.addtoDayView);
+        addtoDayView.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);

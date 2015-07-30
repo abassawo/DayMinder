@@ -10,7 +10,7 @@
 
 
     <string name="title_activity_note">NoteActivity</string>
-    <string name="note_title_hint">Enter a title for the note.</string>
+    <string name="note_title_hint">Note</string>
     <string name="note_title_label">Title</string>
     <string name="note_details_label">Details</string>
     <string name="note_solved_label">Completed?</string>

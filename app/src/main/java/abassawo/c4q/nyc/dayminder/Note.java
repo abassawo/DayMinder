@@ -20,7 +20,8 @@ public class Note {
     private UUID mId;
     private String mTitle;
 
-    public String label = "|";   //Add new label tags to this string if they don't exist. can use | to search index.
+
+    private String[] label;   //Add new label tags to this string if they don't exist. can use | to search index.
     //TODO=Incorporate color for labels.
 
 

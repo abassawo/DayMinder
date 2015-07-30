@@ -3,8 +3,11 @@ package abassawo.c4q.nyc.dayminder;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -22,15 +25,21 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
  * Created by c4q-Abass on 7/19/15.
  */
+
+
 public class NoteFragment extends Fragment {
-    public static final String EXTRA_NOTE_ID = "com.rayacevedo45.c4q.nyc.art._id";
+    public static final String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
     private static final String DIALOG_DATE = "date";
     private static final String DIALOG_TIME = "time";
     private static final int REQUEST_DATE = 0;
@@ -42,6 +51,10 @@ public class NoteFragment extends Fragment {
     private Button mTimeButton;
     private CheckBox mSolvedBox;
     private ImageButton delButton;
+    ImageButton camButton;
+    private ImageView imgPreview;
+    private int CAPTURE_IMAGE = 9;
+    private Uri imageUri;
 
     public static NoteFragment newInstance(UUID noteId) {
         Bundle args = new Bundle();
@@ -57,11 +70,7 @@ public class NoteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID noteId = (UUID)getArguments().getSerializable(EXTRA_NOTE_ID);
-
         mNote = NotePad.get(getActivity()).getNote(noteId);
-
-
-
         setHasOptionsMenu(true);
     }
 
@@ -69,15 +78,19 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_edit, container, false);
+        View v = inflater.inflate(R.layout.activity_note_edit, container);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (NavUtils.getParentActivityName(getActivity()) != null) {
                 getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+
+
+
         delButton = (ImageButton) v.findViewById(R.id.deleteThisNote);
-        mTitleField = (EditText) v.findViewById(R.id.note_title);
+        mTitleField = (EditText) v.findViewById(R.id.title);
 
         mTitleField.setText(mNote.getTitle());
 
@@ -99,6 +112,15 @@ public class NoteFragment extends Fragment {
 
             }
         });
+        imgPreview = (ImageView) v.findViewById(R.id.note_imageView);
+        camButton = (ImageButton) v.findViewById(R.id.camButton);
+        camButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCameraIntent();
+            }
+        });
+
 
         mDateButton = (Button)v.findViewById(R.id.note_date);
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +196,9 @@ public class NoteFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == CAPTURE_IMAGE) {
+           imgPreview.setImageURI(imageUri);
+       }
         if (requestCode == REQUEST_DATE) {
             Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mNote.setDate(date);
@@ -183,6 +208,20 @@ public class NoteFragment extends Fragment {
             mNote.setDate(date);
             updateDate();
         }
+    }
+
+    public void startCameraIntent(){
+        //Destination
+        String mediaStorageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).getPath();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        File mediaFile = new File(mediaStorageDir + File.separator + "IMG_" + timeStamp + ".jpg");
+        // Send intent to take picture
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        imageUri = Uri.fromFile(mediaFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
+        startActivityForResult(cameraIntent, CAPTURE_IMAGE);
     }
 
     @Override
