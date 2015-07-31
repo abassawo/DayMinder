@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by c4q-Abass on 7/19/15.
  */
-public class Note {
+public class Note extends CustomChildObject {
 
     private static final String JSON_ID = "id";
     private static final String JSON_TITLE = "title";
@@ -19,6 +19,7 @@ public class Note {
 
     private UUID mId;
     private String mTitle;
+    private Label mLabel;
 
 
     private String[] label;   //Add new label tags to this string if they don't exist. can use | to search index.
@@ -27,7 +28,7 @@ public class Note {
 
     private Date mDate;
     private boolean mSolved;
-    private String mLabel;
+
 
     public Note() {
         // Generate unique identifier

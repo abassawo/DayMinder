@@ -71,8 +71,8 @@ public class JSONParser {
 
     }
 
-    public ArrayList<JLabel> loadLabels()throws IOException, JSONException {
-        ArrayList<JLabel> labels = new ArrayList<JLabel>();
+    public ArrayList<Label> loadLabels()throws IOException, JSONException {
+        ArrayList<Label> labels = new ArrayList<Label>();
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
@@ -88,7 +88,7 @@ public class JSONParser {
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
             //Build the array of notes from JSONObjects
             for (int i = 0; i < array.length(); i++) {
-                labels.add(new JLabel(array.getJSONObject(i).toString()));
+                labels.add(new Label(array.getJSONObject(i).toString()));
             }
         } catch (FileNotFoundException e) {
             // Ignore this one; it happens when starting fresh

@@ -130,27 +130,16 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(viewpager.getCurrentItem() == 0){
-//                    fab.setVisibility(View.GONE);
-//                } else {
-//                    fab.setVisibility(View.VISIBLE);
-//                }
-
+                Intent editIntent = new Intent(getApplicationContext(), NoteDetailActivity.class);
+                startActivity(editIntent);
                 if(viewpager.getCurrentItem() == 0){
                     insertEvent("Testing");
                     Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
                             .setAction("Action", null);
                     snackbar.show();
                 } else if (viewpager.getCurrentItem() == 1){
-                    Intent editIntent = new Intent(MainActivity.this, NoteEditActivity.class);
+                    //Intent editIntent = new Intent(getApplicationContext(), NoteDetailActivity.class);
                     startActivity(editIntent);
-
-                    fab.setImageResource(R.drawable.ic_done);
-                    NoteFragment newFrag = getNewNoteFragment();
-                    FragmentManager fm = getSupportFragmentManager();
-                    fm.popBackStack();
-                    fm.beginTransaction().replace(R.id.mainContainer, newFrag).commit();
-
 
                 } else {
                     Snackbar snackbar = Snackbar.make(view, "Add new items to your calendar", Snackbar.LENGTH_LONG)

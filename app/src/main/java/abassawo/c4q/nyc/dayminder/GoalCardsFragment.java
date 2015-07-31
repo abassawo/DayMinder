@@ -103,20 +103,20 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
                 if (i % 2 == 0) {
                     CustomChildObject customChildObject = new CustomChildObject();
                     CustomChildObject customChildObject2 = new CustomChildObject();
-                    customChildObject.setChildText("UC Test" + i);
-                    customChildObject2.setChildText("UC Test" + i + "Lorem Ipsum");
+                    customChildObject.setChildText("Lorem Ipsum" + i);
+                    customChildObject2.setChildText("Lorem Ipsum" + i + "Lorem Ipsum");
                     childObjectList.add(customChildObject);
                     childObjectList.add(customChildObject2);
                 } else {
                     CustomChildObject customChildObject = new CustomChildObject();
-                    customChildObject.setChildText("Testing" + i);
+                    customChildObject.setChildText("Lorem Ipsum" + i);
                     childObjectList.add(customChildObject);
                 }
 
                 CustomParentObject customParentObject = new CustomParentObject();
                 customParentObject.setChildObjectList(childObjectList);
                 customParentObject.setParentNumber(i);
-                customParentObject.setParentText("Urban Commune" + i);
+                customParentObject.setParentText("Lorem Ipsum" + i);
                 parentObjectList.add(customParentObject);
             }
             return parentObjectList;

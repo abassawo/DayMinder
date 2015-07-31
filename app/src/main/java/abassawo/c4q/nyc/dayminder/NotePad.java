@@ -15,14 +15,14 @@ public class NotePad {
 
     private ArrayList<Note> mNotes;
 
-    public ArrayList<JLabel> getLabels() {
+    public ArrayList<Label> getLabels() {
         return mLabels;
     }
 
 
-    private ArrayList<JLabel>mLabels;
+    private ArrayList<Label>mLabels;
     private JSONParser mSerializer;
-    private JLabel label;
+    private Label label;
 
 
     private static NotePad sNotePad;
@@ -95,7 +95,7 @@ public class NotePad {
     }
     private void CreateLabels(int count) {  //just for quick testing
         for (int i=0; i < count; i++) {
-            JLabel c = new JLabel();
+            Label c = new Label();
             c.setTitle("Label" + i);
             mLabels.add(c);
         }
