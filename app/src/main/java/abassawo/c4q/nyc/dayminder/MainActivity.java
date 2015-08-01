@@ -130,16 +130,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent editIntent = new Intent(getApplicationContext(), NoteDetailActivity.class);
-                startActivity(editIntent);
+
+
                 if(viewpager.getCurrentItem() == 0){
                     insertEvent("Testing");
                     Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
                             .setAction("Action", null);
                     snackbar.show();
                 } else if (viewpager.getCurrentItem() == 1){
-                    //Intent editIntent = new Intent(getApplicationContext(), NoteDetailActivity.class);
-                    startActivity(editIntent);
+                    Note note = new Note();
+                    note.setTitle("");
+                    NotePad.get(getApplicationContext()).addNote(note);
+                    Intent newNote= new Intent(getApplicationContext(), NoteEditActivity.class);
+                    newNote.putExtra(NoteFragment.EXTRA_NOTE_ID, note.getId());
+                    startActivityForResult(newNote, 0);
 
                 } else {
                     Snackbar snackbar = Snackbar.make(view, "Add new items to your calendar", Snackbar.LENGTH_LONG)
@@ -150,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 

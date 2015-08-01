@@ -26,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class NoteFragment extends Fragment {
     private static final int REQUEST_TIME = 1;
 
     private Note mNote;
-    private EditText mTitleField;
+    private TextView mTitleField;
     private Button mDateButton;
     private Button mTimeButton;
     private CheckBox mSolvedBox;
@@ -81,16 +82,16 @@ public class NoteFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_note_edit, container);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (NavUtils.getParentActivityName(getActivity()) != null) {
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            if (NavUtils.getParentActivityName(getActivity()) != null) {
+//                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+//            }
+//        }
 
 
 
         delButton = (ImageButton) v.findViewById(R.id.deleteThisNote);
-        mTitleField = (EditText) v.findViewById(R.id.title);
+        mTitleField = (TextView) v.findViewById(R.id.title);
 
         mTitleField.setText(mNote.getTitle());
 
@@ -200,14 +201,15 @@ public class NoteFragment extends Fragment {
            imgPreview.setImageURI(imageUri);
        }
         if (requestCode == REQUEST_DATE) {
-            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mNote.setDate(date);
-            updateDate();
-        } else if (requestCode == REQUEST_TIME) {
-            Date date = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mNote.setDate(date);
             updateDate();
         }
+//        } else if (requestCode == REQUEST_TIME) {
+//            Date date = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+//            mNote.setDate(date);
+//            updateDate();
+//        }
     }
 
     public void startCameraIntent(){

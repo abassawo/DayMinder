@@ -37,11 +37,7 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
-
-
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,20 +99,20 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
                 if (i % 2 == 0) {
                     CustomChildObject customChildObject = new CustomChildObject();
                     CustomChildObject customChildObject2 = new CustomChildObject();
-                    customChildObject.setChildText("Lorem Ipsum" + i);
-                    customChildObject2.setChildText("Lorem Ipsum" + i + "Lorem Ipsum");
+                    customChildObject.setChildText("Urban Commune" + i);
+                    customChildObject2.setChildText("UC" + i + "Test");
                     childObjectList.add(customChildObject);
                     childObjectList.add(customChildObject2);
                 } else {
                     CustomChildObject customChildObject = new CustomChildObject();
-                    customChildObject.setChildText("Lorem Ipsum" + i);
+                    customChildObject.setChildText("Urban Commune" + i);
                     childObjectList.add(customChildObject);
                 }
 
                 CustomParentObject customParentObject = new CustomParentObject();
                 customParentObject.setChildObjectList(childObjectList);
                 customParentObject.setParentNumber(i);
-                customParentObject.setParentText("Lorem Ipsum" + i);
+                customParentObject.setParentText("Urban Commune" + i);
                 parentObjectList.add(customParentObject);
             }
             return parentObjectList;
@@ -137,8 +133,6 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
         }
         return speedList;
     }
-
-
 
 
     @Override
