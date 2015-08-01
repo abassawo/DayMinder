@@ -62,7 +62,7 @@ public class DayListFragment extends Fragment {
 
 //        ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, mNotes);
 //        dailyNoteLV.setAdapter(basicAdapter);
-        
+
         customadapter = new NoteAdapter(mNotes);
 
 
