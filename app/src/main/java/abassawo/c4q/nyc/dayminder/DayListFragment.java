@@ -1,5 +1,6 @@
 package abassawo.c4q.nyc.dayminder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,8 +22,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.github.ali.android.client.customview.view.SlidingDrawer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +42,10 @@ import butterknife.ButterKnife;
 /**
  * Created by c4q-Abass on 7/19/15.
  */
-public class DayListFragment extends Fragment {
+public class DayListFragment extends Fragment{
+
+
+
     //@Bind(R.id.DateTV_id) TextView dateTV;
     @Bind(R.id.listview) ListView dailyNoteLV;
     public static Date mDate;
@@ -52,6 +59,8 @@ public class DayListFragment extends Fragment {
     private ImageButton delButton;
     private  NoteAdapter customadapter;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,13 +68,13 @@ public class DayListFragment extends Fragment {
         ButterKnife.bind(this, view);
         mDate = Calendar.getInstance().getTime();
         mNotes =  NotePad.get(getActivity()).getNotes();
+        Note note = new Note("Work on app for App Partner");
+        mNotes.add(note);
 
-//        ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, mNotes);
+//        ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(4), android.R.layout.simple_list_item_1, mNotes);
 //        dailyNoteLV.setAdapter(basicAdapter);
 
         customadapter = new NoteAdapter(mNotes);
-
-
         dailyNoteLV.setAdapter(customadapter);
         customadapter.setNotifyOnChange(true);
         customadapter.notifyDataSetChanged();
@@ -128,6 +137,8 @@ public class DayListFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -135,10 +146,8 @@ public class DayListFragment extends Fragment {
         dailyNoteLV.setAdapter(basicAdapter);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-    }
+
+
 
     public class NoteAdapter extends ArrayAdapter<Note> {
 
@@ -162,7 +171,7 @@ public class DayListFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.list_item_note, parent, false); //try list_item_note nxt
+                convertView = inflater.inflate(R.layout.fragment_day_list, parent, false); //try list_item_note nxt
             }
 
             // Configure for this note
@@ -176,10 +185,10 @@ public class DayListFragment extends Fragment {
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.note_list_item_dateTV);
 
-            if (c != null) {
-                CharSequence cs = DateFormat.format("EEEE, MMM dd, yyyy", c.getDate());
-                dateTextView.setText(cs);
-            }
+//            if (c != null) {
+//                CharSequence cs = DateFormat.format("EEEE, MMM dd, yyyy", c.getDate());
+//                dateTextView.setText(cs);
+//            }
 
 
             CheckBox solvedCheckedBox = (CheckBox) convertView.findViewById(R.id.note_list_item_CheckBox);

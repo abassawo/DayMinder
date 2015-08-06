@@ -62,15 +62,18 @@ public class NotePad {
     }
 
     public void addNote(Note c) {
+        
         mNotes.add(c);
     }
 
     public void deleteNote(Note c) {
+        
         mNotes.remove(c);
     }
 
 
     public void deleteAllNotes(){
+        
         mNotes.clear();
     }
 

@@ -9,6 +9,10 @@ public  class CustomChildObject {
     public CustomChildObject() {
     }
 
+    public CustomChildObject(String mChildText){
+        this.mChildText = mChildText;
+    }
+
     public String getChildText() {
         return mChildText;
     }

@@ -2,6 +2,7 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
@@ -34,12 +36,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
+        android:visibility="invisible"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_action_add_to_queue" />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

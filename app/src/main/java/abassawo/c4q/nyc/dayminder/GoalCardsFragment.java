@@ -24,7 +24,8 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
     private View rv;
     private CustomExpandableAdapter mExpandableAdapter;
     private ArrayList<Long> mDurationList;
-
+    public static List<Note> mNotes;
+    public static List<Label> mLabels;
     RecyclerView mRecyclerView;
     private final String TAG = this.getClass().getSimpleName();
     private static final String CUSTOM_EXPAND_BUTTON_CHECKED = "CUSTOM_EXPAND_BUTTON_CHECKED";
@@ -41,8 +42,10 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      rv = inflater.inflate(R.layout.fragment_goal_list, container, false);
+      rv = inflater.inflate(R.layout.fragment_bottom, container, false);
         //mExpandableAdapter = new CustomExpandableAdapter(getActivity(), setUpTestData(4));
+        mNotes = NotePad.get(getActivity()).getNotes();
+        
         RecyclerView recList = (RecyclerView) rv.findViewById(R.id.cardList);
         recList.setHasFixedSize(false);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -56,7 +59,7 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
         mDurationList = generateSpinnerSpeeds();
 
         // Create a new adapter with 20 test data items
-        mExpandableAdapter = new CustomExpandableAdapter(getActivity(), setUpTestData(5));
+        mExpandableAdapter = new CustomExpandableAdapter(getActivity(), setUpData());
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
         mExpandableAdapter.addExpandCollapseListener(this);
@@ -90,33 +93,34 @@ public class GoalCardsFragment extends Fragment implements ExpandCollapseListene
     }
 
 
-        private ArrayList<ParentObject> setUpTestData(int numItems){
+        private ArrayList<ParentObject> setUpData(){
             ArrayList<ParentObject> parentObjectList = new ArrayList<>();
-            for (int i = 0; i < numItems; i++) {
-                ArrayList<Object> childObjectList = new ArrayList<>();
+            ArrayList<Object> childObjectList = new ArrayList<>();
 
-                // Evens get 2 children, odds get 1
-                if (i % 2 == 0) {
-                    CustomChildObject customChildObject = new CustomChildObject();
-                    CustomChildObject customChildObject2 = new CustomChildObject();
-                    customChildObject.setChildText("Urban Commune" + i);
-                    customChildObject2.setChildText("UC" + i + "Test");
-                    childObjectList.add(customChildObject);
-                    childObjectList.add(customChildObject2);
-                } else {
-                    CustomChildObject customChildObject = new CustomChildObject();
-                    customChildObject.setChildText("Urban Commune" + i);
-                    childObjectList.add(customChildObject);
-                }
+            CustomParentObject c4qLabel = new CustomParentObject("C4Q");
+            CustomParentObject androidDev = new CustomParentObject("Android Development");
 
-                CustomParentObject customParentObject = new CustomParentObject();
-                customParentObject.setChildObjectList(childObjectList);
-                customParentObject.setParentNumber(i);
-                customParentObject.setParentText("Urban Commune" + i);
-                parentObjectList.add(customParentObject);
-            }
+
+            CustomChildObject finalProject = new CustomChildObject("Final Project");
+            CustomChildObject androidchild = new CustomChildObject("Release Cycle");
+
+            ArrayList<Object> androidChildList = new ArrayList<>();
+
+            c4qLabel.setChildObjectList(childObjectList);
+            childObjectList.add(androidchild);
+            androidChildList.add(finalProject);
+            androidDev.setChildObjectList(androidChildList);
+
+            parentObjectList.add(androidDev);
+            parentObjectList.add(c4qLabel);
             return parentObjectList;
         }
+
+        public void addtoGoalsList(Label x, Note y){
+            //fixme create logic to add the Label parent object and Note object to be arranged.
+        }
+
+
 
         /**
          * Method to set up the list of animation durations for the Toolbar's Spinner.

@@ -18,7 +18,16 @@ public class Note extends CustomChildObject {
     private static final String JSON_LABEL_TAG = "label";
 
     private UUID mId;
-    private String mTitle;
+    private String title;
+
+    public Label getmLabel() {
+        return mLabel;
+    }
+
+    public void setmLabel(Label mLabel) {
+        this.mLabel = mLabel;
+    }
+
     private Label mLabel;
 
 
@@ -36,9 +45,13 @@ public class Note extends CustomChildObject {
         mDate = new Date();
     }
 
+    public Note(String title){
+        this.title = title;
+    }
+
     public Note(JSONObject json) throws JSONException {
         mId = UUID.fromString(json.getString(JSON_ID));
-        mTitle = json.getString(JSON_TITLE);
+        title = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
         mSolved = json.getBoolean(JSON_SOLVED);
        // mLabel = json.getString(JSON_LABEL_TAG);
@@ -47,7 +60,7 @@ public class Note extends CustomChildObject {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
-        json.put(JSON_TITLE, mTitle);
+        json.put(JSON_TITLE, title);
         json.put(JSON_SOLVED, mSolved);
         json.put(JSON_DATE, mDate.getTime());
        // json.put(JSON_LABEL_TAG, label);
@@ -55,7 +68,7 @@ public class Note extends CustomChildObject {
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public Date getDate() {
@@ -75,7 +88,7 @@ public class Note extends CustomChildObject {
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
     }
 
     public UUID getId() {
@@ -84,9 +97,9 @@ public class Note extends CustomChildObject {
 
     @Override
     public String toString() {
-        return mTitle;
+        return title;
     }
-
-
-
+    
+   
+    
 }

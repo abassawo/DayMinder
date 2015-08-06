@@ -1,70 +1,72 @@
 package abassawo.c4q.nyc.dayminder;
 
-import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.CalendarContract;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
+
+import com.github.ali.android.client.customview.view.SlidingDrawer;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import java.util.zip.Inflater;
-
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
+
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @Bind(R.id.viewpager) ViewPager viewpager;
+    @Bind(R.id.viewpager) ViewPager viewPager;
     @Bind(R.id.tabs) TabLayout tabLayout;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.nav_view) NavigationView navigationView;
     private FragAdapter adapter;
     public static List<Note>mNotes;
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     private ActionBarDrawerToggle mDrawerToggle;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                final SlidingFragment fragment = (SlidingFragment)
+                        getSupportFragmentManager().
+                                findFragmentByTag(SlidingFragment.TAG);
+                final SlidingDrawer slidingDrawer = fragment.getSlidingDrawer();
+                if (slidingDrawer.isOpened()) {
+                    slidingDrawer.closeDrawer();
+                    return true;
+                }
+
+            default:
+                return super.onKeyDown(keyCode, event);
+        }
+    }
 
 
     @Override
@@ -72,10 +74,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//
-//        fetchCalendars();
-//        fetchEvents();
-//        updateEvent(255);
+
+
+
 
         mNotes = NotePad.get(this).getNotes();
         for(Note x : mNotes){
@@ -86,20 +87,18 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
+//
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null) {
             setupViewPager(viewPager);
         }
 
-        Drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
 
-        mDrawerToggle = new ActionBarDrawerToggle(this,Drawer,toolbar,R.string.openDrawer,R.string.closeDrawer){ //fixme fix the strings
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,toolbar,R.string.openDrawer,R.string.closeDrawer){ //fixme fix the strings
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -117,27 +116,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         }; // Drawer Toggle Object Made
-        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+        mDrawerLayout.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
-
 
 
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        tabLayout.setupWithViewPager(viewpager);
+        tabLayout.setupWithViewPager(this.viewPager);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                if(viewpager.getCurrentItem() == 0){
+                if(MainActivity.this.viewPager.getCurrentItem() == 0){
                     insertEvent("Testing");
                     Snackbar snackbar = Snackbar.make(view, "Select specific tasks from Ongoing that you want to accomplish today", Snackbar.LENGTH_LONG)
                             .setAction("Action", null);
                     snackbar.show();
-                } else if (viewpager.getCurrentItem() == 1){
+                } else if (MainActivity.this.viewPager.getCurrentItem() == 1){
                     Note note = new Note();
                     note.setTitle("");
                     NotePad.get(getApplicationContext()).addNote(note);
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new FragAdapter(getSupportFragmentManager());
         adapter.addFragment(new DayListFragment(), "Today");
-        adapter.addFragment(new GoalCardsFragment(), "Ongoing");
+       // adapter.addFragment(new GoalCardsFragment(), "Ongoing");
         adapter.addFragment(new MonthViewFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
@@ -283,6 +279,24 @@ public class MainActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, id);
 
+    }
+
+    public class AsyncCal extends AsyncTask<Object, Void, Object>{
+
+        @Override
+        protected Void doInBackground(Object[] params) {
+
+            fetchCalendars();
+            fetchEvents();
+            updateEvent(255);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+
+            super.onPostExecute(o);
+        }
     }
 
 }

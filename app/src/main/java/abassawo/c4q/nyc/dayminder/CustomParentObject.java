@@ -18,6 +18,10 @@ public class CustomParentObject implements ParentObject {
     public CustomParentObject() {
     }
 
+    public CustomParentObject(String mParentText) {
+        this.mParentText = mParentText;
+    }
+
     public String getParentText() {
         return mParentText;
     }
