@@ -1,4 +1,4 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by c4q-Abass on 7/19/15.
  */
-public class Note extends CustomChildObject {
+public class Note{
 
     private static final String JSON_ID = "id";
     private static final String JSON_TITLE = "title";

@@ -1,39 +1,35 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Activities;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.R;
 
-
-public class NoteEditActivity extends AppCompatActivity {
-
+/**
+ * Created by c4q-Abass on 9/20/15.
+ */
+public class NotePagerActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private ArrayList<Note> mNotes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note_edit);
-
-
-        mNotes = NotePad.get(this).getNotes();
-
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.viewpager);
+        setContentView(mViewPager);
+
+        mNotes = NotePad.get(this).getNotes();
 
         FragmentManager fm = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
@@ -43,9 +39,9 @@ public class NoteEditActivity extends AppCompatActivity {
             }
 
             @Override
-            public android.support.v4.app.Fragment getItem(int p) {
+            public Fragment getItem(int p) {
                 Note note = mNotes.get(p);
-                return NoteFragment.newInstance(note.getId());
+                return NoteEditFragment.newInstance(note.getId());
             }
         });
 
@@ -53,7 +49,6 @@ public class NoteEditActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int pos) {
-
                 Note note = mNotes.get(pos);
                 if (note.getTitle() != null) {
                     setTitle(note.getTitle());
@@ -67,11 +62,12 @@ public class NoteEditActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int arg0) { }
         });
 
-        UUID noteId = (UUID)getIntent()
-                .getSerializableExtra(NoteFragment.EXTRA_NOTE_ID);
+        UUID crimeId = (UUID)getIntent()
+                .getSerializableExtra(NoteEditFragment.EXTRA_NOTE_ID);
 
-        for (int i=0; i< mNotes.size(); i++) {
-            if (mNotes.get(i).getId().equals(noteId)) {
+        for (int i=0; i< mNotes.size(); i++)
+        {
+            if (mNotes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }

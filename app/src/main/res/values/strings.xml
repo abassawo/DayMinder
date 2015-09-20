@@ -30,4 +30,8 @@
     <string name="openDrawer">DayMinder</string>
     <string name="closeDrawer">DayMinder</string>
     <string name="title_activity_note_edit">NoteEditActivity</string>
+    <string name="search">Search</string>
+    <string name="new_note_hint">New Note</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_note_detail">NoteDetailActivity</string>
 </resources>

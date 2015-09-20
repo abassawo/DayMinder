@@ -1,6 +1,5 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,20 +21,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.ali.android.client.customview.view.SlidingDrawer;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 
+import abassawo.c4q.nyc.dayminder.Activities.EditActivity;
+import abassawo.c4q.nyc.dayminder.Activities.NotePagerActivity;
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -58,6 +57,8 @@ public class DayListFragment extends Fragment{
     private CheckBox mSolvedBox;
     private ImageButton delButton;
     private  NoteAdapter customadapter;
+    private String EXTRA_NOTE_ID = "abassawo.c4q.nyc.dayminder.Fragments.DayListFragment";
+
 
 
 
@@ -68,11 +69,9 @@ public class DayListFragment extends Fragment{
         ButterKnife.bind(this, view);
         mDate = Calendar.getInstance().getTime();
         mNotes =  NotePad.get(getActivity()).getNotes();
-        Note note = new Note("Work on app for App Partner");
-        mNotes.add(note);
+        //Note note = new Note("Make Wire frame for C4Q");
+        //mNotes.add(note);
 
-//        ArrayAdapter basicAdapter = new ArrayAdapter<Note>(getActivity(4), android.R.layout.simple_list_item_1, mNotes);
-//        dailyNoteLV.setAdapter(basicAdapter);
 
         customadapter = new NoteAdapter(mNotes);
         dailyNoteLV.setAdapter(customadapter);
@@ -85,8 +84,8 @@ public class DayListFragment extends Fragment{
                 Note c = (Note)   dailyNoteLV.getItemAtPosition(position);
                 Log.d(" tag", c.getTitle() + " was clicked");
 
-                Intent i = new Intent(getActivity(), NoteEditActivity.class);
-                i.putExtra(NoteFragment.EXTRA_NOTE_ID, c.getId());
+                Intent i = new Intent(getActivity(), NotePagerActivity.class);
+                i.putExtra(EXTRA_NOTE_ID, c.getId());
                 startActivity(i);
             }
         });
@@ -185,14 +184,16 @@ public class DayListFragment extends Fragment{
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.note_list_item_dateTV);
 
-//            if (c != null) {
-//                CharSequence cs = DateFormat.format("EEEE, MMM dd, yyyy", c.getDate());
-//                dateTextView.setText(cs);
+            if (c != null) {
+                CharSequence cs = DateFormat.format("EEEE, MMM dd, yyyy", c.getDate());
+                dateTextView.setText(cs);
 //            }
 
 
-            CheckBox solvedCheckedBox = (CheckBox) convertView.findViewById(R.id.note_list_item_CheckBox);
-            solvedCheckedBox.setChecked(c.isSolved());
+                CheckBox solvedCheckedBox = (CheckBox) convertView.findViewById(R.id.note_list_item_CheckBox);
+                solvedCheckedBox.setChecked(c.isSolved());
+                return convertView;
+            }
             return convertView;
         }
     }

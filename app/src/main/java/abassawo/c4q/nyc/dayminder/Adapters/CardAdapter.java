@@ -1,4 +1,4 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Adapters;
 
 //import android.support.v7.widget.RecyclerView;
 //import android.view.LayoutInflater;
@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.R;
 
 /**
  * Created by c4q-Abass on 7/29/15.

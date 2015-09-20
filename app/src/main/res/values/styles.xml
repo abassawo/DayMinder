@@ -5,9 +5,9 @@
 
     <style name="Base.Theme.DesignDemo" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="colorPrimary">#9C27B0</item>
-        <item name="colorPrimaryDark">#7B1FA2</item>
-        <item name="colorAccent">#7B1FA2</item>
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#448AFF</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 

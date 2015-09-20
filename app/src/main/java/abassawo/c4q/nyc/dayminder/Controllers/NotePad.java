@@ -1,10 +1,14 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Controllers;
 
 import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import abassawo.c4q.nyc.dayminder.Model.JSONParser;
+import abassawo.c4q.nyc.dayminder.Model.Label;
+import abassawo.c4q.nyc.dayminder.Model.Note;
 
 /**
  * Created by c4q-Abass on 7/19/15.

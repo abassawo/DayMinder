@@ -1,4 +1,4 @@
-package abassawo.c4q.nyc.dayminder;
+package abassawo.c4q.nyc.dayminder.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
  */
 //do labels contain notes, or do the notes contain the labels?
 
-public class Label extends CustomParentObject{
+public class Label{
     public String getTitle() {
         return title;
     }
