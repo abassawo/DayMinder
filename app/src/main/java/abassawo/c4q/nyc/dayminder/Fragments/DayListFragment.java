@@ -57,8 +57,8 @@ public class DayListFragment extends Fragment{
     private CheckBox mSolvedBox;
     private ImageButton delButton;
     private  NoteAdapter customadapter;
-    private String EXTRA_NOTE_ID = "abassawo.c4q.nyc.dayminder.Fragments.DayListFragment";
-
+    public static String EXTRA_NOTE_ID = "abassawo.c4q.nyc.dayminder.Fragments.DayListFragment";
+    private static final String TAG = "DayListFragment";
 
 
 
@@ -85,7 +85,7 @@ public class DayListFragment extends Fragment{
                 Log.d(" tag", c.getTitle() + " was clicked");
 
                 Intent i = new Intent(getActivity(), NotePagerActivity.class);
-                i.putExtra(EXTRA_NOTE_ID, c.getId());
+                i.putExtra(DayListFragment.EXTRA_NOTE_ID, c.getId());
                 startActivity(i);
             }
         });

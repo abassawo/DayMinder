@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Fragments.DayListFragment;
 import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
@@ -62,12 +63,12 @@ public class NotePagerActivity extends FragmentActivity {
             public void onPageScrollStateChanged(int arg0) { }
         });
 
-        UUID crimeId = (UUID)getIntent()
-                .getSerializableExtra(NoteEditFragment.EXTRA_NOTE_ID);
+        UUID noteId = (UUID)getIntent()
+                .getSerializableExtra(DayListFragment.EXTRA_NOTE_ID);
 
         for (int i=0; i< mNotes.size(); i++)
         {
-            if (mNotes.get(i).getId().equals(crimeId)) {
+            if (mNotes.get(i).getId().equals(noteId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
