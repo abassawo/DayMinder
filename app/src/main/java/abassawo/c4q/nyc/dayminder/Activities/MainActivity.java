@@ -36,6 +36,7 @@ import abassawo.c4q.nyc.dayminder.Fragments.CalendarFragment;
 import abassawo.c4q.nyc.dayminder.Fragments.DayListFragment;
 import abassawo.c4q.nyc.dayminder.Adapters.FragAdapter;
 import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment;
 import abassawo.c4q.nyc.dayminder.Model.AccountFetcher;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.Model.User;
@@ -130,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new FragAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DayListFragment(), "Today");
+        adapter.addFragment(new DayListFragment(), "Today");   /*regular list view*/
+        adapter.addFragment(new StaggeredDayFragment(), "Today Test");
         adapter.addFragment(new CalendarFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
