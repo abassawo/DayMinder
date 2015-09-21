@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new FragAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DayListFragment(), "Today");   /*regular list view*/
-        adapter.addFragment(new StaggeredDayFragment(), "Today Test");
+       // adapter.addFragment(new DayListFragment(), "Today");   /*regular list view*/
+        adapter.addFragment(new StaggeredDayFragment(), "Today");
         adapter.addFragment(new CalendarFragment(), "Calendar");
         viewPager.setAdapter(adapter);
     }
