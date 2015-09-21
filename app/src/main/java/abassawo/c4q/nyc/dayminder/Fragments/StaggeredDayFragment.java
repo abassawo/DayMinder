@@ -8,10 +8,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
+import abassawo.c4q.nyc.dayminder.Adapters.SimpleRVAdapter;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
@@ -38,7 +40,8 @@ public class StaggeredDayFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         initData();
         initRV();
-        recyclerView.setAdapter(mAdapter);
+        //recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(new SimpleRVAdapter(getActivity().getApplicationContext()));
         return view;
     }
 
@@ -58,8 +61,8 @@ public class StaggeredDayFragment extends Fragment {
 
             @Override
             public void onBindViewHolder(NoteViewHolder holder, int position) {
-                holder.mTextView.setText(mItems.get(position).getTitle());
-                holder.mTextView.setPressed(false);
+                Note note = mItems.get(position);
+                holder.bindNote(note);
             }
 
             @Override
@@ -75,10 +78,23 @@ public class StaggeredDayFragment extends Fragment {
     private class NoteViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextView;
+       // private ImageView mImage;
+        private Note mNote;
 
         public NoteViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView) itemView.findViewById(android.R.id.text1);
+           // mImage = (ImageView) itemView.findViewById(R.id.rv_imageview);
+        }
+
+        public void bindNote(Note note){
+            mNote = note;
+            mTextView.setText(note.getTitle());
+            mTextView.setPressed(false);
+
+               // mImage.setImageResource(mNote.getDrawable());
+
+
         }
     }
 

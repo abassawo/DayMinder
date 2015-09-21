@@ -1,10 +1,14 @@
 package abassawo.c4q.nyc.dayminder.Model;
 
+import android.graphics.drawable.Drawable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.UUID;
+
+import abassawo.c4q.nyc.dayminder.R;
 
 /**
  * Created by c4q-Abass on 7/19/15.
@@ -17,21 +21,32 @@ public class Note{
     private static final String JSON_DATE = "date";
     private static final String JSON_LABEL_TAG = "label";
 
+    public int getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(int drawable) {
+        this.drawable = drawable;
+    }
+
+    private int drawable;
+
     private UUID mId;
     private String title;
 
-    public Label getmLabel() {
-        return mLabel;
+    public String getmLabel() {
+        return this.label;
     }
 
-    public void setmLabel(Label mLabel) {
-        this.mLabel = mLabel;
+    public void setmLabel(String mLabel) {
+
+        this.label = mLabel;
     }
 
-    private Label mLabel;
 
 
-    private String[] label;   //Add new label tags to this string if they don't exist. can use | to search index.
+
+    private String label;   //Add new label tags to this string if they don't exist. can use | to search index.
     //TODO=Incorporate color for labels.
 
 
@@ -43,17 +58,23 @@ public class Note{
         // Generate unique identifier
         mId = UUID.randomUUID();
         mDate = new Date();
+        drawable = R.drawable.c4qlogo;
+        this.label = "Personal";
     }
 
     public Note(String title){
+
         this.title = title;
+        this.label = "Personal";
     }
 
     public Note(JSONObject json) throws JSONException {
+        drawable = R.drawable.c4qlogo;
         mId = UUID.fromString(json.getString(JSON_ID));
         title = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
         mSolved = json.getBoolean(JSON_SOLVED);
+        this.label =  "Personal";
        // mLabel = json.getString(JSON_LABEL_TAG);
     }
 

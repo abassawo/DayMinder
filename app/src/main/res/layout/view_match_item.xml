@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<abassawo.c4q.nyc.dayminder.Adapters.NoteItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:minWidth="24dp"
+    android:padding="8dp"
+    android:layout_margin="2dp"
+    android:background="@color/cardview_light_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:gravity="center_vertical"
+        tools:text="Title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+
+        <!--<ImageView-->
+            <!--android:layout_below="@+id/title"-->
+            <!--android:id="@+id/note_imageView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/c4qlogo"/>-->
+
+    <Button
+        android:layout_below="@+id/note_title"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/note_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:gravity="center_vertical"
+        tools:text="Label"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
+    </RelativeLayout>
+
+</abassawo.c4q.nyc.dayminder.Adapters.NoteItemView>

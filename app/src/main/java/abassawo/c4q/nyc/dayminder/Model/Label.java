@@ -14,16 +14,23 @@ public class Label{
     }
 
     public void setTitle(String title) {
+
         this.title = title;
     }
     private String title;
 
     public Label(String title) {
+
         this.title = title;
     }
 
     public Label() {
 
+    }
+
+    @Override
+    public String toString(){
+        return this.getTitle();
     }
 }
 
