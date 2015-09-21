@@ -27,12 +27,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
 
-        <!--<ImageView-->
-            <!--android:layout_below="@+id/title"-->
-            <!--android:id="@+id/note_imageView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/c4qlogo"/>-->
+        <ImageView
+            android:layout_below="@+id/title"
+            android:id="@+id/note_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/c4qlogo"/>
 
     <Button
         android:layout_below="@+id/note_title"

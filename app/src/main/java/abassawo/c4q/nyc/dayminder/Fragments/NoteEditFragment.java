@@ -73,6 +73,7 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
     FABRevealLayout fabRevealLayout;
     private BottomSheet locationSheet, dateSheet, reminderSheet;
 
+
     private void configureFABReveal(FABRevealLayout fabRevealLayout) {
 
         fabRevealLayout.setOnRevealChangeListener(new OnRevealChangeListener() {
@@ -269,6 +270,7 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
     private void showSelectedImage(Uri selectedImageUri) {
         imgView.setImageDrawable(null);
         Glide.with(this).load(selectedImageUri).crossFade().fitCenter().into(imgView);
+        mNote.setDrawable(selectedImageUri.toString());
         //mTask.setUriStr(imageUri.toString());
 //        mTask.setUriStr(selectedImageUri.toString());
 //        mTask.setCustomPhoto(true);

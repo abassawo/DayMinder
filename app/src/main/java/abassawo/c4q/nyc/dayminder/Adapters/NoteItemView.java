@@ -44,4 +44,6 @@ public class NoteItemView extends LinearLayout {
                 + ": " + getLeft() + "," + getTop()
                 + ": " + getMeasuredWidth() + "x" + getMeasuredHeight();
     }
+
+
 }

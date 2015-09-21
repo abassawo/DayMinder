@@ -1,17 +1,23 @@
 package abassawo.c4q.nyc.dayminder.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import abassawo.c4q.nyc.dayminder.Activities.MainActivity;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
@@ -19,7 +25,7 @@ import abassawo.c4q.nyc.dayminder.R;
 /**
  * Created by c4q-Abass on 9/21/15.
  */
-public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.VerticalItemHolder> {
+public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.VerticalItemHolder>{
 
     private ArrayList<Note> mItems;
 
@@ -102,23 +108,11 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
         }
     }
 
-//    public static class GameItem {
-//        public String homeTeam;
-//        public String awayTeam;
-//        public int homeScore;
-//        public int awayScore;
-//
-//        public GameItem(String homeTeam, String awayTeam, int homeScore, int awayScore) {
-//            this.homeTeam = homeTeam;
-//            this.awayTeam = awayTeam;
-//            this.homeScore = homeScore;
-//            this.awayScore = awayScore;
-//        }
-//    }
 
     public static class VerticalItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTitle, mLabel;
         private Note mNote;
+        private ImageView mImageView;
 
 
         private SimpleRVAdapter mAdapter;
@@ -130,12 +124,19 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
             mAdapter = adapter;
             mTitle = (TextView) itemView.findViewById(R.id.note_title);
             mLabel = (TextView) itemView.findViewById(R.id.note_label);
+            mImageView = (ImageView) itemView.findViewById(R.id.note_imageView);
         }
 
         public void bindView(Note note){
             mNote = note;
             mTitle.setText(note.getTitle());
             mLabel.setText(note.getmLabel().toString());
+
+            if(mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo)){
+                mImageView.setImageURI(Uri.parse(mNote.getDrawable()));
+
+                //Glide.with().load(Uri.parse(mNote.getDrawable())).into(mImageView);
+            }
         }
 
         @Override
@@ -143,37 +144,7 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
             mAdapter.onItemHolderClick(this);
         }
 
-//        public void setHomeScore(CharSequence homeScore) {
-//            mHomeScore.setText(homeScore);
-//        }
-//
-//        public void setAwayScore(CharSequence awayScore) {
-//            mAwayScore.setText(awayScore);
-//        }
-//
-//        public void setHomeName(CharSequence homeName) {
-//            mHomeName.setText(homeName);
-//        }
-//
-//        public void setAwayName(CharSequence awayName) {
-//            mAwayName.setText(awayName);
-//        }
+
     }
 
-//    public static GameItem generateDummyItem() {
-//        Random random = new Random();
-//        return new GameItem("Upset Home", "Upset Away",
-//                random.nextInt(100),
-//                random.nextInt(100) );
-//    }
-
-//    public static List<SimpleRVAdapter> generateDummyData(int count) {
-//        ArrayList<Note> items = new ArrayList<Note>();
-//
-//        for (int i=0; i < count; i++) {
-//            items.add(new SimpleRVAdapter.GameItem("Losers", "Winners", i, i+5));
-//        }
-//
-//        return items;
-//    }
 }

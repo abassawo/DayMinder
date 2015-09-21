@@ -1,6 +1,7 @@
 package abassawo.c4q.nyc.dayminder.Model;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,15 +22,16 @@ public class Note{
     private static final String JSON_DATE = "date";
     private static final String JSON_LABEL_TAG = "label";
 
-    public int getDrawable() {
-        return drawable;
+    public String getDrawable() {
+        return this.drawable;
     }
 
-    public void setDrawable(int drawable) {
+        public void setDrawable(String drawable){
         this.drawable = drawable;
+
     }
 
-    private int drawable;
+    private String drawable;
 
     private UUID mId;
     private String title;
@@ -58,18 +60,18 @@ public class Note{
         // Generate unique identifier
         mId = UUID.randomUUID();
         mDate = new Date();
-        drawable = R.drawable.c4qlogo;
+        drawable = String.valueOf(R.drawable.c4qlogo);
         this.label = "Personal";
     }
 
     public Note(String title){
-
+        drawable = String.valueOf(R.drawable.c4qlogo);
         this.title = title;
         this.label = "Personal";
     }
 
     public Note(JSONObject json) throws JSONException {
-        drawable = R.drawable.c4qlogo;
+        //drawable = R.drawable.c4qlogo;
         mId = UUID.fromString(json.getString(JSON_ID));
         title = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
