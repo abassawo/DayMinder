@@ -18,11 +18,18 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.UUID;
 
+<<<<<<< HEAD:app/src/main/java/abassawo/c4q/nyc/dayminder/NoteEditActivity.java
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 public class NoteEditActivity extends AppCompatActivity {
+
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.R;
+
 
     private ViewPager mViewPager;
     private ArrayList<Note> mNotes;
@@ -68,12 +75,17 @@ public class NoteEditActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int arg0) { }
         });
 
+
         UUID noteId = (UUID)getIntent()
                 .getSerializableExtra(NoteFragment.EXTRA_NOTE_ID);
 
+        UUID crimeId = (UUID)getIntent()
+                .getSerializableExtra(EXTRA_NOTE_ID);
+
+
         for (int i=0; i< mNotes.size(); i++)
         {
-            if (mNotes.get(i).getId().equals(noteId)) {
+            if (mNotes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }

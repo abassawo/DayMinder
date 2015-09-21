@@ -52,6 +52,11 @@ public class DayListFragment extends Fragment {
     private ImageButton delButton;
     private  NoteAdapter customadapter;
 
+    private String EXTRA_NOTE_ID = "abassawo.c4q.nyc.dayminder.Fragments.DayListFragment";
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +83,10 @@ public class DayListFragment extends Fragment {
 
                 Intent i = new Intent(getActivity(), NoteEditActivity.class);
                 i.putExtra(NoteFragment.EXTRA_NOTE_ID, c.getId());
+
+                Intent i = new Intent(getActivity(), NotePagerActivity.class);
+                i.putExtra(EXTRA_NOTE_ID, c.getId());
+
                 startActivity(i);
             }
         });
