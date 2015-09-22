@@ -1,14 +1,17 @@
 package abassawo.c4q.nyc.dayminder.Model;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.R;
 
 /**
@@ -22,6 +25,18 @@ public class Note{
     private static final String JSON_DATE = "date";
     private static final String JSON_LABEL_TAG = "label";
 
+    private Date mDueDate;
+    private Date reminderTime;
+
+    public Date getReminderTime() {
+        return reminderTime;
+    }
+
+    public void setReminderTime(Date reminderTime) {
+        this.reminderTime = reminderTime;
+    }
+
+
     public String getDrawable() {
         return this.drawable;
     }
@@ -29,6 +44,19 @@ public class Note{
         public void setDrawable(String drawable){
         this.drawable = drawable;
 
+    }
+
+    public void setDuetoday(Context ctx){
+        this.setDueDate(NotePad.get(ctx).getTodaysDate());
+    }
+
+
+    public Date getDueDate() {
+        return mDueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.mDueDate = dueDate;
     }
 
     private String drawable;
@@ -90,12 +118,24 @@ public class Note{
         return json;
     }
 
+    public void setDueToday(){
+        this.mDueDate = Calendar.getInstance().getTime();
+    }
+
+    public void setDueTomorrow(Context ctx){
+        this.mDueDate = (NotePad.get(ctx).getTomorrowsDate());
+    }
+
     public String getTitle() {
         return title;
     }
 
     public Date getDate() {
         return mDate;
+    }
+
+    public void setDueinOneWeek(Context ctx){
+        this.mDueDate = NotePad.get(ctx).getNextWeekDate();
     }
 
     public void setDate(Date date) {

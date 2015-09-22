@@ -21,8 +21,11 @@ import butterknife.ButterKnife;
 public class EditActivity extends AppCompatActivity {
     @Bind(R.id.edit_toolbar)
     Toolbar toolbar;
-    private String TAG = "abassawo.c4q.nyc.dayminder.Activities.EditActivity";
+    private static String TAG = "abassawo.c4q.nyc.dayminder.Activities.EditActivity";
     public static final String EXTRA_CRIME_ID = "com.nyc.c4q.abassawo._id";
+    public static final String EXTRA_ID_FOR_LABEL = EXTRA_CRIME_ID + TAG;
+    public static int REQUEST_LABEL = 4;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class EditActivity extends AppCompatActivity {
 
 
     public NoteEditFragment getNewNoteEditFragment() {
-        Note note = new Note();
+        note = new Note();
         UUID newID = note.getId();
         NoteEditFragment newNoteFrag  = NoteEditFragment.newInstance(newID);
         note.setTitle("");
@@ -91,6 +94,13 @@ public class EditActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id == R.id.label_button){
+
+            if(note != null) {
+                Intent intent = new Intent(EditActivity.this, LabelActivity.class);
+                intent.putExtra(EXTRA_ID_FOR_LABEL, note.getId());
+                startActivityForResult(intent, REQUEST_LABEL);
+            }
         }
 
         return super.onOptionsItemSelected(item);

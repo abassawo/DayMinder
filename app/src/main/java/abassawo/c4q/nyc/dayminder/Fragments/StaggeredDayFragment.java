@@ -5,15 +5,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import abassawo.c4q.nyc.dayminder.Activities.MainActivity;
 import abassawo.c4q.nyc.dayminder.Adapters.SimpleRVAdapter;
+import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
@@ -42,6 +48,39 @@ public class StaggeredDayFragment extends Fragment {
         initRV();
         //recyclerView.setAdapter(mAdapter);
         recyclerView.setAdapter(new SimpleRVAdapter(getActivity().getApplicationContext()));
+
+        SwipeDismissRecyclerViewTouchListener touchListener =
+                new SwipeDismissRecyclerViewTouchListener(
+                        recyclerView,
+                        new SwipeDismissRecyclerViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mItems.remove(position);
+                                }
+                                // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+        recyclerView.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        recyclerView.setOnScrollListener(touchListener.makeScrollListener());
+//        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(RecyclerView,
+//                new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        Toast.makeText(MainActivity.this, "Clicked " + mItems.get(position), Toast.LENGTH_SHORT).show();
+//                    }
+//                }));
+
+
+
         return view;
     }
 
@@ -98,6 +137,31 @@ public class StaggeredDayFragment extends Fragment {
         }
     }
 
+
+//    public class RecyclerItemClickListener(RecyclerView recyclerView, AdapterView.
+//    android.widget.AdapterView.OnItemClickListener listener) {
+//        GestureDetector mGestureDetector;
+//        AdapterView.OnItemClickListener mListener;
+//        recyclerView = recyclerView;
+//        mGestureDetector = new GestureDetector(recyclerView.getContext(), new GestureDetector.SimpleOnGestureListener() {
+//            @Override
+//            public boolean onDown(MotionEvent e) {;
+//                super.onDown(e);
+//                return false;
+//            }
+//
+//            @Override
+//            public void onShowPress(MotionEvent e) {
+//                super.onShowPress(e);
+//            }
+//
+//            @Override
+//            public boolean onSingleTapUp(MotionEvent e) {
+//
+//                return true;
+//            }
+//        });
+//    }
 
 
 

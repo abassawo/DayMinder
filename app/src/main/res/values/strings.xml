@@ -34,4 +34,5 @@
     <string name="new_note_hint">New Note</string>
     <string name="title_activity_edit">EditActivity</string>
     <string name="title_activity_note_detail">NoteDetailActivity</string>
+    <string name="title_activity_label">LabelActivity</string>
 </resources>

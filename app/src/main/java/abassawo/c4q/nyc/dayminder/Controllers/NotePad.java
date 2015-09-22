@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import abassawo.c4q.nyc.dayminder.Model.JSONParser;
@@ -27,6 +30,7 @@ public class NotePad {
     private ArrayList<Label>mLabels;
     private JSONParser mSerializer;
     private Label label;
+    private Date todaysDate, tomorrowsDate, weekfromToday;
 
 
     private static NotePad sNotePad;
@@ -106,6 +110,31 @@ public class NotePad {
             c.setTitle("Label" + i);
             mLabels.add(c);
         }
+    }
+
+    private void initDate(){
+        todaysDate = Calendar.getInstance().getTime();
+        Log.d(todaysDate.toString(), "today's date");
+        // Date weekFromToday =;
+    }
+
+    public Date getTodaysDate(){
+
+        return todaysDate;
+    }
+
+    public Date getTomorrowsDate(){
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.add(calendar.DAY_OF_MONTH, 1);
+        tomorrowsDate = calendar.getTime();
+        return tomorrowsDate;
+    }
+
+    public  Date getNextWeekDate(){
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.add(calendar.DAY_OF_MONTH, 7);
+        weekfromToday = calendar.getTime();
+        return tomorrowsDate;
     }
 }
 

@@ -3,6 +3,7 @@ package abassawo.c4q.nyc.dayminder.Fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
@@ -28,14 +31,19 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.ImagePickerSheetView;
 import com.truizlop.fabreveallayout.FABRevealLayout;
 import com.truizlop.fabreveallayout.OnRevealChangeListener;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import abassawo.c4q.nyc.dayminder.Activities.MainActivity;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
@@ -45,7 +53,9 @@ import butterknife.ButterKnife;
 /**
  * Created by c4q-Abass on 9/17/15.
  */
-public class NoteEditFragment extends Fragment implements View.OnClickListener {
+public class NoteEditFragment extends Fragment implements View.OnClickListener,
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener,
+        com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
 
     public static final String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
     private static final String DIALOG_DATE = "date";
@@ -71,6 +81,10 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
     ImageView imgView;
     @Bind(R.id.fab_reveal_layout)
     FABRevealLayout fabRevealLayout;
+    @Bind(R.id.rating_bar)
+    RatingBar ratingBar;
+    @Bind(R.id.label_identifier)
+    TextView labelTV;
     private BottomSheet locationSheet, dateSheet, reminderSheet;
 
 
@@ -88,7 +102,6 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
                 secondaryView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //dateSheet.show();
                         prepareBackTransition(fabRevealLayout);
 
                     }
@@ -113,6 +126,7 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_note_edit, container, false);
         ctx = getActivity().getApplicationContext();
         initViews(view);
+        labelTV.setText(mNote.getmLabel());
         setupListeners();
         configureFABReveal(fabRevealLayout);
         return view;
@@ -121,8 +135,35 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
     public void initViews(View v) {
         ButterKnife.bind(this, v);
         setupDateSheets();
-//        setupReminderSheet();
-//        setupLocationSheet();
+        setupReminderSheet();
+       // setupLocationSheet();
+    }
+
+
+
+    public void setupReminderSheet() {
+        reminderSheet = new BottomSheet.Builder(getActivity()).title("Remind Me").sheet(R.menu.menu_reminder).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                switch (id) {
+                    case R.id.current_time_reminder:
+                        mNote.setReminderTime(new Date());
+                       // locationSheet.show();
+                        break;
+                    case R.id.custom_time:
+                        showCustomTimePicker();
+                        //fm.beginTransaction().add(timeDialog, "TIME").commit();
+                        break;
+                    case R.id.no_timed_reminder:
+                        //taskList.add(mTask);
+                        //locationSheet.show();
+                        break;
+                }
+                //  locationSheet.show();
+                Intent intent = new Intent(ctx, MainActivity.class);  //fixme
+                startActivity(intent);
+            }
+        }).build();
     }
 
     @Override
@@ -135,8 +176,48 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
 
     public void setupDateSheets() {
         // long id = cupboard().withDatabase(db).put(mTask);
-
-        dateSheet = new BottomSheet.Builder(getActivity()).title("Due Date").sheet(R.menu.menu_date).listener(new SheetOnClickListener())
+        dateSheet = new BottomSheet.Builder(getActivity()).title("Due Date").sheet(R.menu.menu_date).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                switch (id) {
+                    case R.id.today_item:
+                        mNote.setDueToday();
+                        // taskList.add(mTask);
+                        Log.d(mNote.toString(), "due date test");
+                        prepareBackTransition(fabRevealLayout);
+                        reminderSheet.show();
+                        // startActivity(new Intent(EditActivity.this, MainActivity.class));
+                        break;
+                    case R.id.tomorrow:
+                        mNote.setDueTomorrow(ctx); //setDueTomorrow fixme
+                        //taskList.add(mTask);
+                        Log.d(mNote.toString(), "due date test");
+                        prepareBackTransition(fabRevealLayout);
+                        reminderSheet.show();
+                        //startActivity(new Intent(EditActivity.this, MainActivity.class));
+                        break;
+                    case R.id.choosedate:
+                        dateSheet.dismiss();//testing
+                        showCustomDatePicker();
+                        Calendar mcurrentDate = Calendar.getInstance();
+                        int mYear = mcurrentDate.get(Calendar.YEAR);
+                        int mMonth = mcurrentDate.get(Calendar.MONTH);
+                        int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                        // fm.beginTransaction().add(dateDialog, "DATE").commit(); //open datepicker
+                        reminderSheet.show();
+                        break;
+                    case R.id.nextweek:
+                        mNote.setDueinOneWeek(ctx);
+                        Log.d(mNote.getDueDate().toString(), "due date test");
+                        prepareBackTransition(fabRevealLayout);
+                        reminderSheet.show();
+                        //startActivity(new Intent(EditActivity.this, MainActivity.class));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
         .build();
 
 
@@ -153,6 +234,14 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
 
     public void setupListeners() {
         view.findViewById(R.id.camButton).setOnClickListener(this);
+        view.findViewById(R.id.time_reminder_btn).setOnClickListener(this);
+        view.findViewById(R.id.location_reminder_btn).setOnClickListener(this);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                dateSheet.show();
+            }
+        });
         edittext.setText(mNote.getTitle());
         edittext.addTextChangedListener(new TextWatcher() {
 
@@ -286,16 +375,82 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void showCustomTimePicker() {
+        Calendar now = Calendar.getInstance();
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog tpd;
+        tpd = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(this,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE), false);
+        tpd.setThemeDark(true);
+        tpd.vibrate(false);
+        tpd.dismissOnPause(true);
+        tpd.setAccentColor(Color.parseColor("#03A9F4"));
+
+        tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                Log.d("TimePicker", "Dialog was cancelled");
+            }
+        });
+        tpd.show(getActivity().getFragmentManager(), "Timepickerdialog");
+    }
+
+    public void showCustomDatePicker() {
+        Calendar now = Calendar.getInstance();
+        com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd;
+        dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+
+
+        dpd.setThemeDark(true);
+        dpd.vibrate(false);
+        dpd.dismissOnPause(true);
+        // if (modeCustomAccentDate.isChecked()) {
+        dpd.setAccentColor(Color.parseColor("#03A9F4"));
+
+        //}
+        dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog tpd =    (com.wdullaer.materialdatetimepicker.time.TimePickerDialog) getActivity().getFragmentManager().findFragmentByTag("Timepickerdialog");
+        com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = (com.wdullaer.materialdatetimepicker.date.DatePickerDialog) getActivity().getFragmentManager().findFragmentByTag("Datepickerdialog");
+
+
+        if (tpd != null) tpd.setOnTimeSetListener(this);
+        if (dpd != null) dpd.setOnDateSetListener(this);
+
+//        if( (mTitle != null) && (isEmpty(edittext))){
+//            edittext.setText(mTitle);
+//        }
+
+
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.camButton:
+                hideKeyboard();
                 if (!controlSheet.isSheetShowing()) {
                     showGalleryPickerSheetView();
                 } else {
                     controlSheet.dismissSheet();
                 }
+                break;
+            case R.id.time_reminder_btn:
+                showCustomTimePicker();
+                break;
+            case R.id.location_reminder_btn:
                 break;
         }
 
@@ -309,51 +464,33 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-}
 
-   class SheetOnClickListener implements DialogInterface.OnClickListener {
+    @Override
+    public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog, int year, int month, int day) {
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.YEAR, year);
+        date.set(Calendar.MONTH, month);
+        date.set(Calendar.DAY_OF_MONTH, day);
+        mNote.setDueDate(date.getTime());
+        //locationSheet.show();
+    }
 
-        @Override
-        public void onClick(DialogInterface dialog, int id) {
-            switch (id) {
-//                case R.id.today_item:
-//                    mNote.setDueToday();
-//                    // taskList.add(mTask);
-//                    Log.d(mTask.toString(), "due date test");
-//                    prepareBackTransition(fabRevealLayout);
-//                    reminderSheet.show();
-//                    // startActivity(new Intent(EditActivity.this, MainActivity.class));
-//                    break;
-//                case R.id.tomorrow:
-//                    mTask.setDueTomorrow(ctx); //setDueTomorrow fixme
-//                    //taskList.add(mTask);
-//                    Log.d(mTask.toString(), "due date test");
-//                    prepareBackTransition(fabRevealLayout);
-//                    reminderSheet.show();
-//                    //startActivity(new Intent(EditActivity.this, MainActivity.class));
-//                    break;
-//                case R.id.choosedate:
-//                    dateSheet.dismiss();//testing
-//                    showCustomDatePicker();
-//                    Calendar mcurrentDate = Calendar.getInstance();
-//                    int mYear = mcurrentDate.get(Calendar.YEAR);
-//                    int mMonth = mcurrentDate.get(Calendar.MONTH);
-//                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-//                    // fm.beginTransaction().add(dateDialog, "DATE").commit(); //open datepicker
-//                    reminderSheet.show();
-//                    break;
-//                case R.id.nextweek:
-//                    mTask.setDueinOneWeek(ctx);
-//                    Log.d(mTask.getDueDate().toString(), "due date test");
-//                    prepareBackTransition(fabRevealLayout);
-//                    reminderSheet.show();
-//                    //startActivity(new Intent(EditActivity.this, MainActivity.class));
-//                    break;
-                default:
-                    break;
-            }
-
-        }
-
+    @Override
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int min) {
+        Calendar time =  Calendar.getInstance();
+        time.set(Calendar.HOUR, hour);
+        time.set(Calendar.MINUTE, min);
+        mNote.setReminderTime(time.getTime());
+        //locationSheet.show();
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        labelTV.setText(mNote.getmLabel());
+        //set additional things for the note that may need to be changed
+        //ie label and background color.
+    }
+}
+

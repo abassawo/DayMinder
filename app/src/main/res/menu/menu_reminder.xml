@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/current_time_reminder" android:title="Current Time" />
+    <item android:id="@+id/custom_time" android:title="Select a Time" />
+    <item android:id="@+id/no_timed_reminder" android:title="No Reminder" />
+
+
+</menu>

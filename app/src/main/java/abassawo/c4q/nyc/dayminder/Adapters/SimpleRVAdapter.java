@@ -84,12 +84,6 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
     public void onBindViewHolder(VerticalItemHolder itemHolder, int position) {
         Note item = mItems.get(position);
         itemHolder.bindView(item);
-
-//        itemHolder.setAwayScore(item.getTitle());
-//        //itemHolder.setHomeScore(item.getDate().toString());
-//
-//        itemHolder.setAwayName(String.valueOf(item.getmLabel()));
-//        //itemHolder.setHomeName(String.valueOf(item.getDrawable()));
     }
 
     @Override

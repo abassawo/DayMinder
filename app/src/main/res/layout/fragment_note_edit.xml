@@ -177,6 +177,7 @@
 
 
             <ImageView
+            android:id="@+id/location_reminder_btn"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/time_reminder_btn"
             android:src="@drawable/ic_action_place"
@@ -185,6 +186,7 @@
 
 
             <RatingBar
+            android:id="@+id/rating_bar"
             android:layout_centerInParent="true"
             android:layout_below="@+id/time_reminder_btn"
             android:layout_width="wrap_content"
@@ -202,19 +204,15 @@
 
 
     <TextView
-        android:visibility="invisible"
+        android:id="@+id/label_identifier"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Priority"
+        android:text=""
         style="?android:listSeparatorTextViewStyle"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         />
-
-
-
-
-
 
 
 
