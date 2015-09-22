@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -51,6 +52,23 @@ public class LabelActivity extends AppCompatActivity implements View.OnClickList
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, initLabelData());
         mAdapter.setNotifyOnChange(true);
         listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mNote.setmLabel(mAdapter.getItem(position).toString());
+            }
+        });
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mNote.setmLabel(mAdapter.getItem(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         initListeners();
      //  mAdapter = new LabelAdapter(this, android.R.layout.simple_list_item_single_choice, initLabelData());
         //listView.setAdapter(mAdapter);
@@ -68,15 +86,15 @@ public class LabelActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                addPrompt ="Create \"  " + edittext.getText() + "\"";
+               // addPrompt ="Create \"  " + edittext.getText() + "\"";
                 mAdapter.getFilter().filter(s);
-                mAdapter.add(addPrompt);
+                //mAdapter.add(addPrompt);
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                mAdapter.remove(addPrompt);
+                //mAdapter.remove(addPrompt);
 
                 if(!(usersLabels.contains(s.toString()))){
                     addNewButton.setVisibility(View.VISIBLE);
