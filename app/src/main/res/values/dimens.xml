@@ -6,4 +6,10 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_avatar_size">40dp</dimen>
+
+
+    <dimen name="button_size">60dp</dimen>
+    <dimen name="button_textSize">9dp</dimen>
+
+    <dimen name="sliding_image_size">30dp</dimen>
 </resources>
