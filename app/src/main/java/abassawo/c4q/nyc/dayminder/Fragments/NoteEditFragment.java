@@ -126,7 +126,9 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         view = inflater.inflate(R.layout.fragment_note_edit, container, false);
         ctx = getActivity().getApplicationContext();
         initViews(view);
-        labelTV.setText(mNote.getmLabel());
+        if(mNote.getmLabel() != null) {
+            labelTV.setText(mNote.getmLabel());
+        }
         setupListeners();
         configureFABReveal(fabRevealLayout);
         return view;
@@ -171,6 +173,8 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         UUID noteId = (UUID) getArguments().getSerializable(EXTRA_NOTE_ID);
         mNote = NotePad.get(getActivity()).getNote(noteId);
+        NotePad notePad = NotePad.get(getActivity().getApplicationContext());
+        notePad.saveNotes();
         setHasOptionsMenu(true);
     }
 
@@ -248,16 +252,18 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 mNote.setTitle(c.toString());
+                NotePad.get(getActivity().getApplicationContext()).saveNotes();
             }
 
             @Override
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+               // NotePad.get(getActivity().getApplicationContext()).saveNotes();
                 // left blank
             }
 
             @Override
             public void afterTextChanged(Editable c) {
-                // left blank
+                NotePad.get(getActivity().getApplicationContext()).saveNotes();
             }
         });
 

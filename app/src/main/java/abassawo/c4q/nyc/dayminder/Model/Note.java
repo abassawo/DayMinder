@@ -23,10 +23,16 @@ public class Note{
     private static final String JSON_TITLE = "title";
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
+    private static final String JSON_DRAWABLE = "drawable";
     private static final String JSON_LABEL_TAG = "label";
+
 
     private Date mDueDate;
     private Date reminderTime;
+
+    public boolean hasLabel(){
+        return this.getmLabel().length() > 0;
+    }
 
     public Date getReminderTime() {
         return reminderTime;
@@ -69,7 +75,6 @@ public class Note{
     }
 
     public void setmLabel(String mLabel) {
-
         this.label = mLabel;
     }
 
@@ -89,23 +94,21 @@ public class Note{
         mId = UUID.randomUUID();
         mDate = new Date();
         drawable = String.valueOf(R.drawable.c4qlogo);
-        this.label = "Personal";
+        label = "";
     }
 
     public Note(String title){
         drawable = String.valueOf(R.drawable.c4qlogo);
         this.title = title;
-        this.label = "Personal";
     }
 
     public Note(JSONObject json) throws JSONException {
-        //drawable = R.drawable.c4qlogo;
+        drawable = json.getString(JSON_DRAWABLE);
         mId = UUID.fromString(json.getString(JSON_ID));
         title = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
         mSolved = json.getBoolean(JSON_SOLVED);
-        this.label =  "Personal";
-       // mLabel = json.getString(JSON_LABEL_TAG);
+        label = json.getString(JSON_LABEL_TAG);
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -114,7 +117,8 @@ public class Note{
         json.put(JSON_TITLE, title);
         json.put(JSON_SOLVED, mSolved);
         json.put(JSON_DATE, mDate.getTime());
-       // json.put(JSON_LABEL_TAG, label);
+        json.put(JSON_DRAWABLE, drawable);
+        json.put(JSON_LABEL_TAG, label);
         return json;
     }
 

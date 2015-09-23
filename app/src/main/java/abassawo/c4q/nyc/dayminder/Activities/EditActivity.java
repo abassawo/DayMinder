@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.UUID;
 
@@ -48,9 +49,14 @@ public class EditActivity extends AppCompatActivity {
         UUID newID = note.getId();
         NoteEditFragment newNoteFrag  = NoteEditFragment.newInstance(newID);
         note.setTitle("");
-        NotePad.get(getApplicationContext()).addNote(note);
+        NotePad notePad = NotePad.get(getApplicationContext());
+        notePad.addNote(note);
+        notePad.saveNotes();
+
         return newNoteFrag;
     }
+
+
 
     public static NoteEditFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();

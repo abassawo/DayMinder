@@ -124,11 +124,13 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
         public void bindView(Note note){
             mNote = note;
             mTitle.setText(note.getTitle());
-            mLabel.setText(note.getmLabel().toString());
+            if(note.hasLabel()) {
+                mLabel.setText(note.getmLabel().toString());
+                mLabel.setVisibility(View.VISIBLE);
+            }
 
-            if(mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo)){
+            if(mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo) && (mNote.getDrawable() != null)){
                 mImageView.setImageURI(Uri.parse(mNote.getDrawable()));
-
                 //Glide.with().load(Uri.parse(mNote.getDrawable())).into(mImageView);
             }
         }
