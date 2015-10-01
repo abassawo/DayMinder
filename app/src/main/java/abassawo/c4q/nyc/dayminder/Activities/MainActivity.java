@@ -2,14 +2,10 @@ package abassawo.c4q.nyc.dayminder.Activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,14 +25,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Fragments.CalendarFragment;
-import abassawo.c4q.nyc.dayminder.Fragments.DayListFragment;
 import abassawo.c4q.nyc.dayminder.Adapters.FragAdapter;
-import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Fragments.LinearDayFragment;
 import abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment;
 import abassawo.c4q.nyc.dayminder.Model.AccountFetcher;
 import abassawo.c4q.nyc.dayminder.Model.Label;
@@ -61,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AccountHeader header;
     private List<Label>labels;
     private Drawer drawer = null;
-    public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";;
+    public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
+    private boolean gridFrag = true;
 
     public List<PrimaryDrawerItem> setupLabelDrawerItems(){
         List<PrimaryDrawerItem> labelList = new ArrayList<PrimaryDrawerItem>();
@@ -137,15 +132,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new FragAdapter(getSupportFragmentManager());
-        adapter.addFragment(new StaggeredDayFragment(), "Today");
-        adapter.addFragment(new CalendarFragment(), "Calendar");
-        viewPager.setAdapter(adapter);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(this.viewPager);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,12 +148,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new FragAdapter(getSupportFragmentManager());
+        //if (gridFrag) {
+            adapter.addFragment(new StaggeredDayFragment(), "Today");
+       // } else {
+            //adapter.addFragment(new LinearDayFragment(), "Today");
+      //  }
+
+        adapter.addFragment(new CalendarFragment(), "Calendar");
+        viewPager.setAdapter(adapter);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawer.openDrawer();
+                break;
+            case R.id.action_settings:
+                if(gridFrag){
+                    gridFrag = false;
+                } else {
+                    gridFrag = true;
+                }
+                setupViewPager(viewPager);
+                tabLayout.setupWithViewPager(this.viewPager);
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

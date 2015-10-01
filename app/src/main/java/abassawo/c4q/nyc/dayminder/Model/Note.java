@@ -103,8 +103,10 @@ public class Note{
         label = "";
     }
 
+    public static String defaultImgStr =  String.valueOf(R.drawable.c4qlogo);
+
     public Note(String title){
-        drawable = String.valueOf(R.drawable.c4qlogo);
+        drawable = defaultImgStr;
         this.title = title;
     }
 
@@ -172,7 +174,9 @@ public class Note{
     public String toString() {
         return title;
     }
-    
-   
-    
+
+
+    public boolean hasCustomImage() {
+        return this.getDrawable() != Note.defaultImgStr;
+    }
 }
