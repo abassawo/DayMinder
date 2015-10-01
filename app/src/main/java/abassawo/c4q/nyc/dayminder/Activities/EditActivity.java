@@ -1,6 +1,7 @@
 package abassawo.c4q.nyc.dayminder.Activities;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Model.Database.DBHelper;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
 import butterknife.Bind;
@@ -50,6 +52,8 @@ public class EditActivity extends AppCompatActivity {
         NoteEditFragment newNoteFrag  = NoteEditFragment.newInstance(newID);
         note.setTitle("");
         NotePad notePad = NotePad.get(getApplicationContext());
+        DBHelper dbHelper = new DBHelper(this);
+        dbHelper.addNoteToDB(note);
         notePad.addNote(note);
         notePad.saveNotes();
 

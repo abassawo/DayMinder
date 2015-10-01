@@ -8,11 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Fragments.DayListFragment;
 import abassawo.c4q.nyc.dayminder.Fragments.NoteEditFragment;
+import abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
 
@@ -21,7 +23,7 @@ import abassawo.c4q.nyc.dayminder.R;
  */
 public class NotePagerActivity extends FragmentActivity {
     private ViewPager mViewPager;
-    private ArrayList<Note> mNotes;
+    private List<Note> mNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class NotePagerActivity extends FragmentActivity {
         });
 
         UUID noteId = (UUID)getIntent()
-                .getSerializableExtra(DayListFragment.EXTRA_NOTE_ID);
+                .getSerializableExtra(StaggeredDayFragment.EXTRA_NOTE_ID);
 
         for (int i=0; i< mNotes.size(); i++)
         {

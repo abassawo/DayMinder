@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Model.Database.DBHelper;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
 import butterknife.Bind;

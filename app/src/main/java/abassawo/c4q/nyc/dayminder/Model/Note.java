@@ -38,6 +38,12 @@ public class Note{
         return reminderTime;
     }
 
+
+    public Note(UUID id){
+        this.mId = id;
+        mDate = new Date();
+    }
+
     public void setReminderTime(Date reminderTime) {
         this.reminderTime = reminderTime;
     }

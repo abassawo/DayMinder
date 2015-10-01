@@ -44,6 +44,13 @@
         tools:text="Label"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+        <ImageView
+            android:id="@+id/handle"
+            android:layout_width="?listPreferredItemHeight"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|right"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_view" />
 
     </RelativeLayout>
 

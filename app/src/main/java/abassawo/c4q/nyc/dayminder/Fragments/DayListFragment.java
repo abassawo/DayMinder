@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 /**
  * Created by c4q-Abass on 7/19/15.
  */
-public class DayListFragment extends Fragment{
+public class DayListFragment extends StaggeredDayFragment{
 
 
 
