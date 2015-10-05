@@ -31,7 +31,7 @@ public class Note{
     private Date reminderTime;
 
     public boolean hasLabel(){
-        return this.getmLabel().length() > 0;
+        return this.getmLabel() != null && this.getmLabel().length() > 0;
     }
 
     public Date getReminderTime() {
@@ -100,7 +100,6 @@ public class Note{
         mId = UUID.randomUUID();
         mDate = new Date();
         drawable = String.valueOf(R.drawable.c4qlogo);
-        label = "";
     }
 
     public static String defaultImgStr =  String.valueOf(R.drawable.c4qlogo);

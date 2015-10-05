@@ -19,6 +19,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.text.SimpleDateFormat;
@@ -119,11 +120,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .withSliderBackgroundColor(getResources().getColor(R.color.primary_dark_material_light))
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("New Task").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_discussion),
-                        new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_friends),
-                        new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_home),
-                        new PrimaryDrawerItem().withName("Contact").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_messages));
-
+                        new PrimaryDrawerItem().withName("New Task").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_new_task),
+                        new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_places),
+                        new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_all_tasks),
+                        new PrimaryDrawerItem().withName("Labels").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_labels));
+        builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
+                switch (iDrawerItem.getIdentifier()) {
+                    case R.id.nav_new_task:
+                        Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_places:
+                        break;
+                    case R.id.nav_all_tasks:
+                        break;
+                    case R.id.nav_labels:
+                        break;
+                }
+                return false;
+            }
+        });
         for (int i = 0; i < setupLabelDrawerItems().size() ; i++) {
             List<PrimaryDrawerItem> usersLabels = setupLabelDrawerItems();
             builder.addDrawerItems(usersLabels.get(i));
@@ -170,8 +188,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_settings:
                 if(gridFrag){
                     gridFrag = false;
+                    adapter.addFragment(new LinearDayFragment(), "Today");
                 } else {
                     gridFrag = true;
+                    adapter.addFragment(new StaggeredDayFragment(), "Today");
                 }
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(this.viewPager);
@@ -194,6 +214,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         i.putExtra(MainActivity.EXTRA_NOTE_ID, note.getId());
         startActivityForResult(i, 0);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NotePad.get(getApplicationContext()).saveNotes();
+    }
+
+
 
     @Override
     public void onClick(View v) {

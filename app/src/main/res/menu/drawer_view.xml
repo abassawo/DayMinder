@@ -6,21 +6,21 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_new_task"
             android:icon="@drawable/ic_dashboard"
-            android:title="Home" />
+            android:title="New Task" />
         <item
-            android:id="@+id/nav_messages"
+            android:id="@+id/nav_places"
             android:icon="@drawable/ic_event"
-            android:title="Pending Actions" />
+            android:title="Places" />
         <item
-            android:id="@+id/nav_friends"
+            android:id="@+id/nav_all_tasks"
             android:icon="@drawable/ic_headset"
-            android:title="Resources" />
+            android:title="All Tasks" />
         <item
-            android:id="@+id/nav_discussion"
+            android:id="@+id/nav_labels"
             android:icon="@drawable/ic_forum"
-            android:title="BackBurner" />
+            android:title="Labels" />
     </group>
 
     <item android:title="Labels">

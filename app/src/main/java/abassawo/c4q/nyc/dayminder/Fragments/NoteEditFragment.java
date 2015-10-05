@@ -137,6 +137,14 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         return view;
     }
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(mNote.getmLabel() != null) {
+            labelTV.setText(mNote.getmLabel());
+        }
+    }
+
     public void initViews(View v) {
         ButterKnife.bind(this, v);
         setupDateSheets();

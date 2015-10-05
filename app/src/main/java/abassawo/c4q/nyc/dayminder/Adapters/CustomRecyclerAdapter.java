@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Collections;
 import java.util.List;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Model.Database.DBHelper;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
 
@@ -21,13 +24,18 @@ import abassawo.c4q.nyc.dayminder.R;
  */
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder> implements ItemTouchHelperAdapter {
     private List<Note> mItems;
+    private Context ctx;
 
     public CustomRecyclerAdapter(Context ctx) {
         mItems = NotePad.get(ctx).getNotes();
+        DBHelper helper = new DBHelper(ctx);
+        //mItems = helper.getNotes();
+
     }
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ctx = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_match_item, parent, false);
         // View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1
         //    , parent, false);
@@ -38,7 +46,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
         Note note = mItems.get(position);
-        holder.bindNote(note);
+        holder.bindNote(note, ctx);
     }
 
 
@@ -99,7 +107,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 //
 //
 //
-        public void bindNote(Note note) {
+        public void bindNote(Note note, Context ctx) {
             mNote = note;
             mTitle.setPressed(false);
             mTitle.setText(note.getTitle());
@@ -110,7 +118,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
             if (mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo) && (mNote.getDrawable() != null)) {
                 mImage.setImageURI(Uri.parse(mNote.getDrawable()));
-                //Glide.with().load(Uri.parse(mNote.getDrawable())).into(mImageView);
+                Glide.with(ctx).load(Uri.parse(mNote.getDrawable())).into(mImage);
             }
 
 

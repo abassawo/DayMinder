@@ -33,6 +33,8 @@ package abassawo.c4q.nyc.dayminder.Fragments;
         import butterknife.Bind;
         import butterknife.ButterKnife;
 
+        import static abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter.*;
+
 /**
  * Created by c4q-Abass on 9/21/15.
  */
@@ -114,9 +116,13 @@ public class StaggeredDayFragment extends Fragment {
         mItems = NotePad.get(getActivity()).getNotes();
     }
 
-    private void initRV() {
-        mAdapter = new CustomRecyclerAdapter(getActivity());
-    }
+//    private void initRV() {
+//        mAdapter = new CustomRecyclerAdapter(getActivity());
+//    }
+private void initRV() {
+    mAdapter = new CustomRecyclerAdapter(getActivity());
+}
+
 
 
     //INNER CLASS
