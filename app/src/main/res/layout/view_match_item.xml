@@ -35,7 +35,6 @@
             android:src="@drawable/c4qlogo"/>
 
     <Button
-        android:visibility="invisible"
         android:layout_below="@+id/note_title"
         android:layout_alignParentBottom="true"
         android:id="@+id/note_label"

@@ -221,15 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onBackPressed();
     }
 
-    public void showCreateNote(View v) {
-        Note note = new Note();
-        note.setTitle("");
-        NotePad.get(getApplicationContext()).addNote(note);
-        Intent i = new Intent(getApplicationContext(), NotePagerActivity.class);
-        i.putExtra(MainActivity.EXTRA_NOTE_ID, note.getId());
-        startActivityForResult(i, 0);
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -242,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fabAddNewNote:
-//                showCreateNote(v);
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(intent);
 
