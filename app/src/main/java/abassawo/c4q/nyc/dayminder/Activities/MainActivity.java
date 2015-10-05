@@ -23,7 +23,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +33,6 @@ import abassawo.c4q.nyc.dayminder.Adapters.FragAdapter;
 import abassawo.c4q.nyc.dayminder.Fragments.LinearDayFragment;
 import abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment;
 import abassawo.c4q.nyc.dayminder.Model.AccountFetcher;
-import abassawo.c4q.nyc.dayminder.Model.Label;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.Model.User;
 import abassawo.c4q.nyc.dayminder.R;
@@ -54,18 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String emailAddress;
     private IProfile userProfile;
     private AccountHeader header;
-    private List<Label>labels;
     private Drawer drawer = null;
     public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
     private boolean gridFrag = true;
-
-    public List<PrimaryDrawerItem> setupLabelDrawerItems(){
-        List<PrimaryDrawerItem> labelList = new ArrayList<PrimaryDrawerItem>();
-        for (int i = 0; i < labels.size() ; i++) {
-            labelList.add(new PrimaryDrawerItem().withName(labels.get(i).toString()).withIdentifier(i));
-        }
-        return labelList;
-    }
 
 
     @Override
@@ -75,9 +64,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         initListeners();
         setupDrawer(savedInstanceState);
+        drawer = new DrawerBuilder()
+                .withActivity(this).
+                withAccountHeader(header, false)
+                .withActionBarDrawerToggleAnimated(true)
+                .withActionBarDrawerToggle(true)
+                .withSavedInstance(savedInstanceState)
+                .withShowDrawerOnFirstLaunch(true)
+                .withSliderBackgroundColor(getResources().getColor(R.color.primary_dark_material_light))
+                .withToolbar(toolbar)
+
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("New Task").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_new_task),
+                        new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_places),
+                        new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_all_tasks),
+                        new PrimaryDrawerItem().withName("Contact").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_labels))
+                                .build();
     }
-
-
 
     public void initViews(){
        ButterKnife.bind(this);
@@ -96,6 +99,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(this);
     }
 
+    public void initState(){  //FIXME
+        mNotes = NotePad.get(this).getNotes();
+        for(Note x : mNotes){
+            if (x.getTitle().toString() == "") {
+                mNotes.remove(x);
+            }
+        }
+
+    }
 
     public void setupDrawer(Bundle savedInstanceState){
         userProfile = new ProfileDrawerItem()
@@ -108,7 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .withHeaderBackground(R.drawable.background_poly)
                 .build();
 
-        labels = new ArrayList(); //fixme
+
+        //labels = new ArrayList(); //fixme
 
         DrawerBuilder builder = new DrawerBuilder()
                 .withActivity(this).
@@ -142,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
-        for (int i = 0; i < setupLabelDrawerItems().size() ; i++) {
-            List<PrimaryDrawerItem> usersLabels = setupLabelDrawerItems();
-            builder.addDrawerItems(usersLabels.get(i));
-        }
+//        for (int i = 0; i < setupLabelDrawerItems().size() ; i++) {
+//            List<PrimaryDrawerItem> usersLabels = setupLabelDrawerItems();
+//            builder.addDrawerItems(usersLabels.get(i));
+//        }
         drawer = builder.build();
     }
 
@@ -155,6 +168,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(this.viewPager);
+
+
+    }
+
+
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new FragAdapter(getSupportFragmentManager());
+       // adapter.addFragment(new DayListFragment(), "Today");   /*regular list view*/
+        adapter.addFragment(new StaggeredDayFragment(), "Today");
+        adapter.addFragment(new CalendarFragment(), "Calendar");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -167,17 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new FragAdapter(getSupportFragmentManager());
-        //if (gridFrag) {
-            adapter.addFragment(new StaggeredDayFragment(), "Today");
-       // } else {
-            //adapter.addFragment(new LinearDayFragment(), "Today");
-      //  }
 
-        adapter.addFragment(new CalendarFragment(), "Calendar");
-        viewPager.setAdapter(adapter);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

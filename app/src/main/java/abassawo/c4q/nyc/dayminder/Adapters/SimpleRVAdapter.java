@@ -27,7 +27,7 @@ import abassawo.c4q.nyc.dayminder.R;
  */
 public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.VerticalItemHolder>{
 
-    private List<Note> mItems;
+    private ArrayList<Note> mItems;
 
     private AdapterView.OnItemClickListener mOnItemClickListener;
 

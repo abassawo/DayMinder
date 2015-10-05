@@ -1,37 +1,32 @@
 package abassawo.c4q.nyc.dayminder.Fragments;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.support.annotation.Nullable;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.widget.LinearLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.support.v7.widget.StaggeredGridLayoutManager;
-        import android.support.v7.widget.helper.ItemTouchHelper;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
 
-        import java.util.Collections;
-        import java.util.List;
-
-        import abassawo.c4q.nyc.dayminder.Activities.NotePagerActivity;
-        import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
-        import abassawo.c4q.nyc.dayminder.Adapters.ItemClickSupport;
-        import abassawo.c4q.nyc.dayminder.Adapters.ItemTouchHelperAdapter;
-        import abassawo.c4q.nyc.dayminder.Adapters.SimpleItemTouchHelperCallback;
-        import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
-        import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
-        import abassawo.c4q.nyc.dayminder.Model.Note;
-        import abassawo.c4q.nyc.dayminder.R;
-        import butterknife.Bind;
-        import butterknife.ButterKnife;
+import abassawo.c4q.nyc.dayminder.Activities.MainActivity;
+import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
+import abassawo.c4q.nyc.dayminder.Adapters.SimpleRVAdapter;
+import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.R;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
         import static abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter.*;
 
@@ -40,14 +35,13 @@ package abassawo.c4q.nyc.dayminder.Fragments;
  */
 
 public class StaggeredDayFragment extends Fragment {
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private CustomRecyclerAdapter mAdapter;
-    public static String EXTRA_NOTE_ID = "abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment";
-    //private SimpleRVAdapter mAdapter;
+   @Bind(R.id.recyclerView)
+   RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutmanager;
+    private RecyclerView.Adapter<NoteViewHolder> mAdapter;
     private List<Note> mItems;
     private ItemTouchHelper mItemTouchHelper;
+
 
 
     @Nullable
@@ -56,76 +50,138 @@ public class StaggeredDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.day_staggered_grid, container, false);
         ButterKnife.bind(this, view);
 
+        RecyclerView.LayoutManager layoutManager;
 
-            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+           // layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         //layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
+       layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
         recyclerView.setLayoutManager(layoutManager);
-
-
         initData();
         initRV();
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent i = new Intent(getActivity(), NotePagerActivity.class);
-                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
-                startActivity(i);
-            }
-        });
+        //recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(new SimpleRVAdapter(getActivity().getApplicationContext()));
 
+        SwipeDismissRecyclerViewTouchListener touchListener =
+                new SwipeDismissRecyclerViewTouchListener(
+                        recyclerView,
+                        new SwipeDismissRecyclerViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
 
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(mAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
-
-
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.callOnClick();
-
-
-        SwipeDismissRecyclerViewTouchListener touchListener = new SwipeDismissRecyclerViewTouchListener(
-                recyclerView,
-                new SwipeDismissRecyclerViewTouchListener.DismissCallbacks() {
-                    @Override
-                    public boolean canDismiss(int position) {
-                        return true;
-                    }
-
-                    @Override
-                    public void onDismiss(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                        for (int position : reverseSortedPositions) {
-                            mItems.remove(position);
-                        }
-                        // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
-
-                        // notify();
-
-                        //helper.notify();
-                    }
-                });
+                            @Override
+                            public void onDismiss(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mItems.remove(position);
+                                }
+                                // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
         recyclerView.setOnTouchListener(touchListener);
-
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
         recyclerView.setOnScrollListener(touchListener.makeScrollListener());
+//        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(RecyclerView,
+//                new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        Toast.makeText(MainActivity.this, "Clicked " + mItems.get(position), Toast.LENGTH_SHORT).show();
+//                    }
+//                }));
+
+
 
         return view;
     }
 
-    private void initData() {
+    private void initData(){
         mItems = NotePad.get(getActivity()).getNotes();
     }
 
-//    private void initRV() {
-//        mAdapter = new CustomRecyclerAdapter(getActivity());
+    private void initRV(){
+        mAdapter = new RecyclerView.Adapter<NoteViewHolder>() {
+            @Override
+            public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1
+                        , parent, false);
+                view.setBackgroundResource(android.R.drawable.list_selector_background);
+                return new NoteViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(NoteViewHolder holder, int position) {
+                Note note = mItems.get(position);
+                holder.bindNote(note);
+            }
+
+            @Override
+            public int getItemCount() {
+                return mItems.size();
+            }
+        };
+    }
+
+
+
+
+    private class NoteViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView mTextView;
+       // private ImageView mImage;
+        private Note mNote;
+
+        public NoteViewHolder(View itemView) {
+            super(itemView);
+            mTextView = (TextView) itemView.findViewById(android.R.id.text1);
+           // mImage = (ImageView) itemView.findViewById(R.id.rv_imageview);
+        }
+
+        public void bindNote(Note note){
+            mNote = note;
+            mTextView.setText(note.getTitle());
+            mTextView.setPressed(false);
+
+               // mImage.setImageResource(mNote.getDrawable());
+
+
+        }
+    }
+
+
+//private void initRV() {
+//    mAdapter = new CustomRecyclerAdapter(getActivity());
+//}
+
+//    public class RecyclerItemClickListener(RecyclerView recyclerView, AdapterView.
+//    android.widget.AdapterView.OnItemClickListener listener) {
+//        GestureDetector mGestureDetector;
+//        AdapterView.OnItemClickListener mListener;
+//        recyclerView = recyclerView;
+//        mGestureDetector = new GestureDetector(recyclerView.getContext(), new GestureDetector.SimpleOnGestureListener() {
+//            @Override
+//            public boolean onDown(MotionEvent e) {;
+//                super.onDown(e);
+//                return false;
+//            }
+//
+//            @Override
+//            public void onShowPress(MotionEvent e) {
+//                super.onShowPress(e);
+//            }
+//
+//            @Override
+//            public boolean onSingleTapUp(MotionEvent e) {
+//
+//                return true;
+//            }
+//        });
 //    }
-private void initRV() {
-    mAdapter = new CustomRecyclerAdapter(getActivity());
-}
 
-
-
-    //INNER CLASS
 
 
 }

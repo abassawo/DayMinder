@@ -15,20 +15,18 @@ import java.util.Collections;
 import java.util.List;
 
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
-import abassawo.c4q.nyc.dayminder.Model.Database.DBHelper;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.R;
 
 /**
  * Created by c4q-Abass on 9/30/15.
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder> implements ItemTouchHelperAdapter {
+public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder>{
     private List<Note> mItems;
     private Context ctx;
 
     public CustomRecyclerAdapter(Context ctx) {
         mItems = NotePad.get(ctx).getNotes();
-        DBHelper helper = new DBHelper(ctx);
         //mItems = helper.getNotes();
 
     }
@@ -55,32 +53,32 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         return mItems.size();
     }
 
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mItems, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mItems, i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
-    }
+//    @Override
+//    public void onItemMove(int fromPosition, int toPosition) {
+//        if (fromPosition < toPosition) {
+//            for (int i = fromPosition; i < toPosition; i++) {
+//                Collections.swap(mItems, i, i + 1);
+//            }
+//        } else {
+//            for (int i = fromPosition; i > toPosition; i--) {
+//                Collections.swap(mItems, i, i - 1);
+//            }
+//        }
+//        notifyItemMoved(fromPosition, toPosition);
+//    }
+//
+//    @Override
+//    public void onItemDismiss(int position) {
+//        mItems.remove(position);
+//        notifyItemRemoved(position);
+//    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    public class NoteViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
         //       // private ImageView mImage;
 //        private Note mNote;
@@ -125,15 +123,15 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         }
 
 
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
+//        @Override
+//        public void onItemSelected() {
+//
+//        }
+//
+//        @Override
+//        public void onItemClear() {
+//
+//        }
     }
 
 
