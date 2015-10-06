@@ -22,12 +22,12 @@ public class NotePad {
 
     private ArrayList<Note> mNotes;
 
-    public ArrayList<String> getLabels() {
+    public ArrayList<Label> getLabels() {
         return mLabels;
     }
 
 
-    private ArrayList<String>mLabels;
+    private ArrayList<Label>mLabels;
     private JSONParser mSerializer;
     private Label label;
     private Date todaysDate, tomorrowsDate, weekfromToday;
@@ -102,6 +102,13 @@ public class NotePad {
             c.setTitle("Note #" + i);
             c.setSolved(i %2 == 0); // Alternate ones are checked.
             mNotes.add(c);
+        }
+    }
+    private void CreateLabels(int count) {  //just for quick testing
+        for (int i=0; i < count; i++) {
+            Label c = new Label();
+            c.setTitle("Label" + i);
+            mLabels.add(c);
         }
     }
 

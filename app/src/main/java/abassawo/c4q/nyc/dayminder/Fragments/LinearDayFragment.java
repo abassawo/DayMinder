@@ -17,8 +17,6 @@ import java.util.List;
 
 import abassawo.c4q.nyc.dayminder.Activities.NotePagerActivity;
 import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
-import abassawo.c4q.nyc.dayminder.Adapters.ItemClickSupport;
-import abassawo.c4q.nyc.dayminder.Adapters.SimpleItemTouchHelperCallback;
 import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
 import abassawo.c4q.nyc.dayminder.Model.Note;
@@ -56,20 +54,20 @@ public class LinearDayFragment extends Fragment {
 
         initData();
         initRV();
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent i = new Intent(getActivity(), NotePagerActivity.class);
-                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
-                startActivity(i);
-            }
-        });
+//        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                Intent i = new Intent(getActivity(), NotePagerActivity.class);
+//                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
+//                startActivity(i);
+//            }
+//        });
 
 
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(mAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper.Callback callback =
+//                new SimpleItemTouchHelperCallback(mAdapter);
+        //ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+      //  touchHelper.attachToRecyclerView(recyclerView);
 
 
         recyclerView.setAdapter(mAdapter);

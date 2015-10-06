@@ -27,7 +27,7 @@ import abassawo.c4q.nyc.dayminder.R;
  */
 public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.VerticalItemHolder>{
 
-    private List<Note> mItems;
+    private ArrayList<Note> mItems;
 
     private AdapterView.OnItemClickListener mOnItemClickListener;
 
@@ -124,15 +124,13 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Vertic
         public void bindView(Note note){
             mNote = note;
             mTitle.setText(note.getTitle());
-            if(note.hasLabel()) {
-                mLabel.setText(note.getmLabel().toString());
-                mLabel.setVisibility(View.VISIBLE);
-            }
+            mLabel.setText(note.getmLabel().toString());
 
-            if(mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo) && (mNote.getDrawable() != null)){
+            //if(mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo)){
                 mImageView.setImageURI(Uri.parse(mNote.getDrawable()));
+
                 //Glide.with().load(Uri.parse(mNote.getDrawable())).into(mImageView);
-            }
+           // }
         }
 
         @Override

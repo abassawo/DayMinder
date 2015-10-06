@@ -1,39 +1,36 @@
 package abassawo.c4q.nyc.dayminder.Fragments;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.support.annotation.Nullable;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.widget.LinearLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.support.v7.widget.StaggeredGridLayoutManager;
-        import android.support.v7.widget.helper.ItemTouchHelper;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
-        import java.util.Collections;
-        import java.util.List;
+import java.util.Collections;
+import java.util.List;
 
-        import abassawo.c4q.nyc.dayminder.Activities.NotePagerActivity;
-        import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
-        import abassawo.c4q.nyc.dayminder.Adapters.ItemClickSupport;
-        import abassawo.c4q.nyc.dayminder.Adapters.ItemTouchHelperAdapter;
-        import abassawo.c4q.nyc.dayminder.Adapters.SimpleItemTouchHelperCallback;
-        import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
-        import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
-        import abassawo.c4q.nyc.dayminder.Model.Note;
-        import abassawo.c4q.nyc.dayminder.R;
-        import butterknife.Bind;
-        import butterknife.ButterKnife;
+import abassawo.c4q.nyc.dayminder.Activities.NotePagerActivity;
+import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
+import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
+import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
+import abassawo.c4q.nyc.dayminder.Model.Note;
+import abassawo.c4q.nyc.dayminder.R;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-        import static abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter.*;
+import static abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter.*;
 
 /**
  * Created by c4q-Abass on 9/21/15.
@@ -57,7 +54,7 @@ public class StaggeredDayFragment extends Fragment {
         ButterKnife.bind(this, view);
 
 
-            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         //layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -65,24 +62,24 @@ public class StaggeredDayFragment extends Fragment {
 
         initData();
         initRV();
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent i = new Intent(getActivity(), NotePagerActivity.class);
-                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
-                startActivity(i);
-            }
-        });
+//        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                Intent i = new Intent(getActivity(), NotePagerActivity.class);
+//                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
+//                startActivity(i);
+//            }
+//        });
 
 
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(mAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper.Callback callback =
+//                new SimpleItemTouchHelperCallback(mAdapter);
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(recyclerView);
 
 
         recyclerView.setAdapter(mAdapter);
-        recyclerView.callOnClick();
+        //recyclerView.callOnClick();
 
 
         SwipeDismissRecyclerViewTouchListener touchListener = new SwipeDismissRecyclerViewTouchListener(
@@ -116,12 +113,12 @@ public class StaggeredDayFragment extends Fragment {
         mItems = NotePad.get(getActivity()).getNotes();
     }
 
-//    private void initRV() {
+    //    private void initRV() {
 //        mAdapter = new CustomRecyclerAdapter(getActivity());
 //    }
-private void initRV() {
-    mAdapter = new CustomRecyclerAdapter(getActivity());
-}
+    private void initRV() {
+        mAdapter = new CustomRecyclerAdapter(getActivity());
+    }
 
 
 
