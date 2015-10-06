@@ -3,6 +3,7 @@
     <item type="id" name="dayViewpager"/>
     <item type="id" name="viewpager"/>
 
+
     <item name="item_click_support" type="id">item_click</item>
 
 </resources>

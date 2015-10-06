@@ -51,10 +51,8 @@ public class EditActivity extends AppCompatActivity {
 
         NotePad.get(getApplicationContext()).addNote(note);
 
-        NotePad notePad = NotePad.get(getApplicationContext());
-        notePad.addNote(note);
-        notePad.saveNotes();
-
+//        NotePad notePad = NotePad.get(getApplicationContext());
+//        notePad.addNote(note);
         return newNoteFrag;
     }
 

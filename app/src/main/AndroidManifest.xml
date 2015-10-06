@@ -41,6 +41,7 @@
         android:theme="@style/Theme.DesignDemo" >
         <activity
             android:name=".Activities.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,9 +51,11 @@
         </activity>
         <activity
             android:name=".Activities.NotePagerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_note_edit" />
         <activity
             android:name=".Activities.EditActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_edit" >
         </activity>
 
@@ -81,6 +84,7 @@
 
         <activity
             android:name=".Activities.LabelActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_label" >
         </activity>
     </application>

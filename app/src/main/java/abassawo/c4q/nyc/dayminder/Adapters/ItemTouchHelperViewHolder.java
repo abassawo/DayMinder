@@ -1,5 +1,7 @@
 package abassawo.c4q.nyc.dayminder.Adapters;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
+
 /**
  * Created by c4q-Abass on 9/30/15.
  */

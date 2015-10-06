@@ -78,17 +78,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-//    @Override
-//    public void onItemMove(int fromPosition, int toPosition) {
-//
-//    }
-//
-//    @Override
-//    public void onItemDismiss(int position) {
-//
-//    }
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder {
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
         private TextView mTextView;
         //       // private ImageView mImage;
 //        private Note mNote;
@@ -124,24 +115,24 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
                 mLabel.setVisibility(View.VISIBLE);
             }
 
-            if (mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo) && (mNote.getDrawable() != null)) {
-                mImage.setImageURI(Uri.parse(mNote.getDrawable()));
-                Glide.with(ctx).load(Uri.parse(mNote.getDrawable())).into(mImage);
+            if (note.hasCustomImage()) {
+                mImage.setVisibility(View.VISIBLE);
+                Glide.with(ctx).load(Uri.parse(note.getDrawable())).into(mImage);
             }
 
 
         }
 
+        @Override
+        public void onItemSelected() {
 
-//        @Override
-//        public void onItemSelected() {
-//
-//        }
-//
-//        @Override
-//        public void onItemClear() {
-//
-//        }
+        }
+
+        @Override
+        public void onItemClear() {
+
+        }
+
     }
 
 

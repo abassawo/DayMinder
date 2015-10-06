@@ -26,6 +26,7 @@
         />
 
         <ImageView
+            android:visibility="gone"
             android:layout_margin="0dp"
             android:padding="0dp"
             android:layout_below="@+id/title"

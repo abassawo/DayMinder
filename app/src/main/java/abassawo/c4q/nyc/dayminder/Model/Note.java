@@ -93,7 +93,7 @@ public class Note{
         // Generate unique identifier
         mId = UUID.randomUUID();
         mDate = new Date();
-        drawable = String.valueOf(R.drawable.c4qlogo);
+        drawable = defaultImgStr;
 
         this.label = "Personal";
     }
@@ -107,7 +107,7 @@ public class Note{
     }
 
     public Note(JSONObject json) throws JSONException {
-        //drawable = R.drawable.c4qlogo;
+        drawable = defaultImgStr;
         mId = UUID.fromString(json.getString(JSON_ID));
         title = json.getString(JSON_TITLE);
         mDate = new Date(json.getLong(JSON_DATE));
@@ -173,6 +173,6 @@ public class Note{
 
 
     public boolean hasCustomImage() {
-        return this.getDrawable() != Note.defaultImgStr;
+        return this.getDrawable() != Note.defaultImgStr && this.getDrawable() != null;
     }
 }

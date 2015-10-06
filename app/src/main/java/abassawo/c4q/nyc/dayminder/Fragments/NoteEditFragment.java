@@ -130,9 +130,12 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         if(mNote.getmLabel() != null) {
             labelTV.setText(mNote.getmLabel());
         }
-        if(mNote.hasCustomImage()){
-            Glide.with(this).load(Uri.parse(mNote.getDrawable())).crossFade().fitCenter().into(imgView);
+        if (mNote.getDrawable() != String.valueOf(R.drawable.c4qlogo) && (mNote.getDrawable() != null)) {
+            imgView.setImageURI(Uri.parse(mNote.getDrawable()));
+            Glide.with(ctx).load(Uri.parse(mNote.getDrawable())).into(imgView);
         }
+            //imgView.setImageURI(Uri.parse(mNote.getDrawable()));
+
 
         labelTV.setText(mNote.getmLabel());
 
