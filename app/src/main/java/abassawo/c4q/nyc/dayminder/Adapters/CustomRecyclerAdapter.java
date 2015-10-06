@@ -21,7 +21,7 @@ import abassawo.c4q.nyc.dayminder.R;
 /**
  * Created by c4q-Abass on 9/30/15.
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder>{
+public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder> implements ItemTouchHelperAdapter{
     private List<Note> mItems;
     private Context ctx;
 
@@ -76,6 +76,16 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+
     }
 
     public class NoteViewHolder extends RecyclerView.ViewHolder {
