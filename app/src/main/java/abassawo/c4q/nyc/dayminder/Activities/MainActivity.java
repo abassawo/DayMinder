@@ -53,8 +53,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private IProfile userProfile;
     private AccountHeader header;
     private Drawer drawer = null;
+
     public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
     private boolean gridFrag = true;
+
+
 
 
     @Override
@@ -63,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         initListeners();
+
         setupDrawer(savedInstanceState);
+
         drawer = new DrawerBuilder()
                 .withActivity(this).
                 withAccountHeader(header, false)
@@ -79,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_places),
                         new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_all_tasks),
                         new PrimaryDrawerItem().withName("Contact").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_labels))
+
                                 .build();
     }
 
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
 
 
+
         //labels = new ArrayList(); //fixme
 
         DrawerBuilder builder = new DrawerBuilder()
@@ -160,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            builder.addDrawerItems(usersLabels.get(i));
 //        }
         drawer = builder.build();
+
     }
 
 

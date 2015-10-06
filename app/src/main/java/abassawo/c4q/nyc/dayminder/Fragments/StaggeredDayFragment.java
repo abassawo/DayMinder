@@ -99,9 +99,9 @@ public class StaggeredDayFragment extends Fragment {
                         }
                         // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
 
-                        // notify();
+                        notify();
 
-                        //helper.notify();
+
                     }
                 });
         recyclerView.setOnTouchListener(touchListener);

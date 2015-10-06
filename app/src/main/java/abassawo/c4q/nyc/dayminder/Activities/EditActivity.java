@@ -48,7 +48,13 @@ public class EditActivity extends AppCompatActivity {
         UUID newID = note.getId();
         NoteEditFragment newNoteFrag  = NoteEditFragment.newInstance(newID);
         note.setTitle("");
+
         NotePad.get(getApplicationContext()).addNote(note);
+
+        NotePad notePad = NotePad.get(getApplicationContext());
+        notePad.addNote(note);
+        notePad.saveNotes();
+
         return newNoteFrag;
     }
 

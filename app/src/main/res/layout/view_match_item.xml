@@ -46,6 +46,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 
+
         <ImageView
             android:visibility="invisible"
             android:id="@+id/handle"
