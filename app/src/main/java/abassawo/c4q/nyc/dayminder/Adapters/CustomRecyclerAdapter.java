@@ -21,7 +21,7 @@ import abassawo.c4q.nyc.dayminder.R;
 /**
  * Created by c4q-Abass on 9/30/15.
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder>{
+public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.NoteViewHolder> implements  ItemTouchHelperAdapter{
     private List<Note> mItems;
     private Context ctx;
 
@@ -53,30 +53,28 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         return mItems.size();
     }
 
-//    @Override
-//    public void onItemMove(int fromPosition, int toPosition) {
-//        if (fromPosition < toPosition) {
-//            for (int i = fromPosition; i < toPosition; i++) {
-//                Collections.swap(mItems, i, i + 1);
-//            }
-//        } else {
-//            for (int i = fromPosition; i > toPosition; i--) {
-//                Collections.swap(mItems, i, i - 1);
-//            }
-//        }
-//        notifyItemMoved(fromPosition, toPosition);
-//    }
-//
-//    @Override
-//    public void onItemDismiss(int position) {
-//        mItems.remove(position);
-//        notifyItemRemoved(position);
-//    }
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
+    public void onItemDismiss(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
     }
+
+
+
 
     public class NoteViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
