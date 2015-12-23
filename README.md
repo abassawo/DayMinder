@@ -5,4 +5,4 @@ It is heavily inspired by Google Keep, a personal favorite of mine.
 
 Swipe tasks away to remove complete tasks.
 
- ![DayMinder ](http://i.imgur.com/3Yo76TQ.png width = 100)
+ ![DayMinder ](http://i.imgur.com/3Yo76TQ.png =250*250)
