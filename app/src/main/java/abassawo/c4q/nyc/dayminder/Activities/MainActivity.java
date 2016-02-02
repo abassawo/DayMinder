@@ -2,37 +2,31 @@ package abassawo.c4q.nyc.dayminder.Activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 
+import abassawo.c4q.nyc.dayminder.Adapters.CustomRecyclerAdapter;
+import abassawo.c4q.nyc.dayminder.Adapters.ItemClickSupport;
+import abassawo.c4q.nyc.dayminder.Adapters.SimpleItemTouchHelperCallback;
+import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
-import abassawo.c4q.nyc.dayminder.Fragments.CalendarFragment;
 import abassawo.c4q.nyc.dayminder.Adapters.FragAdapter;
-import abassawo.c4q.nyc.dayminder.Fragments.LinearDayFragment;
-import abassawo.c4q.nyc.dayminder.Fragments.StaggeredDayFragment;
-import abassawo.c4q.nyc.dayminder.Model.AccountFetcher;
 import abassawo.c4q.nyc.dayminder.Model.Note;
 import abassawo.c4q.nyc.dayminder.Model.User;
 import abassawo.c4q.nyc.dayminder.R;
@@ -41,114 +35,121 @@ import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    @Bind(R.id.viewpager) ViewPager viewPager;
-    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.nav_view) NavigationView navView;
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.fabAddNewNote) FloatingActionButton fab;
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+    private CustomRecyclerAdapter mAdapter;
+    private List<Note> mItems;
     private FragAdapter adapter;
     public static List<Note>mNotes;
     private User user;
-    private String userName;
-    private String emailAddress;
-    private IProfile userProfile;
-    private AccountHeader header;
-    private Drawer drawer = null;
 
     public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
     private boolean gridFrag = true;
+    private boolean firstRun;
 
-
-
-
+    private void initData(){
+        mItems = NotePad.get(this).getNotes();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        initData();
+        initRV();
+        setupRecyclerView(recyclerView);
+        updateUI();
         initViews();
-        initState();
+        setupDrawer(navView);
         initListeners();
 
-        setupDrawer(savedInstanceState);
-
-        drawer = new DrawerBuilder()
-                .withActivity(this).
-                withAccountHeader(header, false)
-                .withActionBarDrawerToggleAnimated(true)
-                .withActionBarDrawerToggle(true)
-                .withSavedInstance(savedInstanceState)
-                .withShowDrawerOnFirstLaunch(true)
-                .withSliderBackgroundColor(getResources().getColor(R.color.primary_dark_material_light))
-                .withToolbar(toolbar)
-
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("New Task").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_new_task),
-                        new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_places),
-                        new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_all_tasks),
-                        new PrimaryDrawerItem().withName("Contact").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_labels))
-
-                                .build();
     }
 
+    private void initRV(){
+        mAdapter = new CustomRecyclerAdapter(this);
+    }
+    public void setupRecyclerView(RecyclerView recyclerView){
+        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent i = new Intent(getApplicationContext(), NotePagerActivity.class);
+                i.putExtra(EXTRA_NOTE_ID, mItems.get(position).getId());
+                startActivity(i);
+            }
+        });
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
+
+
+        recyclerView.setAdapter(mAdapter);
+
+        recyclerView.callOnClick();
+
+        SwipeDismissRecyclerViewTouchListener touchListener =
+                new SwipeDismissRecyclerViewTouchListener(
+                        recyclerView,
+                        new SwipeDismissRecyclerViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mItems.remove(position);
+                                }
+                                // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+        recyclerView.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        recyclerView.setOnScrollListener(touchListener.makeScrollListener());
+    }
+
+
+    public void updateUI(){
+        NotePad notePad = NotePad.get(this);
+        List<Note>notes = notePad.getNotes();
+        if(mAdapter == null) {
+            mAdapter = new CustomRecyclerAdapter(notes);
+            recyclerView.setAdapter(mAdapter);
+        } else{
+            mAdapter.setItems(notes);
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+
     public void initViews(){
-       ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
-
-        if (viewPager != null) {
-            setupViewPager(viewPager);
-        }
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        tabLayout.setupWithViewPager(this.viewPager);
     }
 
     public void initListeners(){
         fab.setOnClickListener(this);
     }
 
-    public void initState(){  //FIXME
-        mNotes = NotePad.get(this).getNotes();
-        for(Note x : mNotes){
-            if (x.getTitle().toString() == "") {
-                mNotes.remove(x);
-            }
-        }
-
-    }
-
-    public void setupDrawer(Bundle savedInstanceState){
-        userProfile = new ProfileDrawerItem()
-                .withName(AccountFetcher.getName(this))
-                .withNameShown(true)
-                .withIcon(R.drawable.abassicon);
-
-        header = new AccountHeaderBuilder().withActivity(this)
-                .addProfiles(userProfile, new ProfileSettingDrawerItem())
-                .withHeaderBackground(R.drawable.background_poly)
-                .build();
 
 
-
-        //labels = new ArrayList(); //fixme
-
-        DrawerBuilder builder = new DrawerBuilder()
-                .withActivity(this).
-                        withAccountHeader(header, false)
-                .withActionBarDrawerToggleAnimated(true)
-                .withActionBarDrawerToggle(true)
-                .withSavedInstance(savedInstanceState)
-                .withShowDrawerOnFirstLaunch(true)
-                .withSliderBackgroundColor(getResources().getColor(R.color.primary_dark_material_light))
-                .withToolbar(toolbar)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("New Task").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_new_task),
-                        new PrimaryDrawerItem().withName("Places").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_places),
-                        new PrimaryDrawerItem().withName("All Tasks").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_all_tasks),
-                        new PrimaryDrawerItem().withName("Labels").withIcon(getResources().getDrawable(R.drawable.ic_menu)).withIdentifier(R.id.nav_labels));
-        builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+    public void setupDrawer(NavigationView nav){
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
-                switch (iDrawerItem.getIdentifier()) {
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.nav_new_task:
                         Intent intent = new Intent(MainActivity.this, EditActivity.class);
                         startActivity(intent);
@@ -156,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_places:
                         break;
                     case R.id.nav_all_tasks:
+//                        Intent notesIntent = new Intent(MainActivity.this, AllNotesActivity.class);
+//                        startActivity(notesIntent);
                         break;
                     case R.id.nav_labels:
                         break;
@@ -163,33 +166,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
-//        for (int i = 0; i < setupLabelDrawerItems().size() ; i++) {
-//            List<PrimaryDrawerItem> usersLabels = setupLabelDrawerItems();
-//            builder.addDrawerItems(usersLabels.get(i));
-//        }
-        drawer = builder.build();
-
     }
+//
+//    public List<Label>setupLabelDrawerItems(){
+//        return NotePad.get(this).initLabelData();
+//    }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(this.viewPager);
-
-
     }
 
-
-
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new FragAdapter(getSupportFragmentManager());
-       // adapter.addFragment(new DayListFragment(), "Today");   /*regular list view*/
-        adapter.addFragment(new StaggeredDayFragment(), "Today");
-        adapter.addFragment(new CalendarFragment(), "Calendar");
-        viewPager.setAdapter(adapter);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -201,24 +189,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                drawer.openDrawer();
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.action_settings:
-                if(gridFrag){
-                    gridFrag = false;
-                    adapter.addFragment(new LinearDayFragment(), "Today");
-                } else {
-                    gridFrag = true;
-                    adapter.addFragment(new StaggeredDayFragment(), "Today");
-                }
-                setupViewPager(viewPager);
-                tabLayout.setupWithViewPager(this.viewPager);
                 return true;
 
         }
@@ -244,9 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fabAddNewNote:
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(intent);
-
-
-
         }
     }
 }

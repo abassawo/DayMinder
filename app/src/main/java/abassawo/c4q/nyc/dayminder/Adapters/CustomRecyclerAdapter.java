@@ -27,8 +27,15 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
     public CustomRecyclerAdapter(Context ctx) {
         mItems = NotePad.get(ctx).getNotes();
-        //mItems = helper.getNotes();
+    }
 
+    public CustomRecyclerAdapter(List<Note>mItems){
+       setItems(mItems);
+
+    }
+
+    public void setItems(List<Note>notes){
+        mItems = notes;
     }
 
     @Override
@@ -79,7 +86,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     }
 
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+    public class NoteViewHolder extends RecyclerView.ViewHolder  implements ItemTouchHelperViewHolder{
         private TextView mTextView;
         //       // private ImageView mImage;
 //        private Note mNote;
@@ -97,15 +104,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
             mImage = (ImageView) itemView.findViewById(R.id.note_imageView);
         }
 
-        //            public void bindNote(Note note){
-//                mNote = note;
-//                mTextView.setText(note.getTitle());
-//                mTextView.setPressed(false);
-//                mImage.setImageResource(mNote.getDrawable());
-//
-//
-//
-//
+
+
         public void bindNote(Note note, Context ctx) {
             mNote = note;
             mTitle.setPressed(false);

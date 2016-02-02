@@ -3,6 +3,10 @@ package abassawo.c4q.nyc.dayminder.Model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +29,7 @@ public class Note{
     private static final String JSON_DATE = "date";
     private static final String JSON_LABEL_TAG = "label";
 
-    private Date mDueDate;
+    private Date mDueDate = null;
     private Date reminderTime;
 
 
@@ -57,7 +61,7 @@ public class Note{
 
 
     public Date getDueDate() {
-        return mDueDate;
+        return this.mDueDate;
     }
 
     public void setDueDate(Date dueDate) {
@@ -116,18 +120,36 @@ public class Note{
        // mLabel = json.getString(JSON_LABEL_TAG);
     }
 
+
     public JSONObject toJSON() throws JSONException {
+
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
         json.put(JSON_TITLE, title);
         json.put(JSON_SOLVED, mSolved);
         json.put(JSON_DATE, mDate.getTime());
-       // json.put(JSON_LABEL_TAG, label);
+        json.put(JSON_LABEL_TAG, label);
         return json;
     }
 
-    public void setDueToday(){
-        this.mDueDate = Calendar.getInstance().getTime();
+//    public String toJSON(){
+//        final GsonBuilder builder = new GsonBuilder();
+//        final Gson gson = builder.create();
+//        final String json = gson.toJson(this);
+//        Log.d("Serialised: %s%n", json);
+//        return json;
+//    }
+
+//    public Note(String json, boolean gson){
+//        if(gson) {
+//            this = gson.fromJson(json, Note.class);
+//        }
+//    }
+
+
+
+    public void setDueToday(Context ctx){
+        this.mDueDate = (NotePad.get(ctx).getTodaysDate());
     }
 
     public void setDueTomorrow(Context ctx){

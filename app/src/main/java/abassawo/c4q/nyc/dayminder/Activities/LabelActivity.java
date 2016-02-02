@@ -49,7 +49,7 @@ public class LabelActivity extends AppCompatActivity implements View.OnClickList
         ButterKnife.bind(this);
         UUID id = (UUID) getIntent().getExtras().get(EditActivity.EXTRA_ID_FOR_LABEL);
         final Note mNote = NotePad.get(getApplicationContext()).getNote(id);
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, initLabelData());
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, NotePad.get(this).initLabelData());
         mAdapter.setNotifyOnChange(true);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,11 +82,11 @@ public class LabelActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               // addPrompt ="Create \"  " + edittext.getText() + "\"";
+                // addPrompt ="Create \"  " + edittext.getText() + "\"";
                 mAdapter.getFilter().filter(s);
                 //mAdapter.add(addPrompt);
 
@@ -96,26 +96,18 @@ public class LabelActivity extends AppCompatActivity implements View.OnClickList
             public void afterTextChanged(Editable s) {
                 //mAdapter.remove(addPrompt);
 
-                if(!(usersLabels.contains(s.toString()))){
+                if (!(usersLabels.contains(s.toString()))) {
                     addNewButton.setVisibility(View.VISIBLE);
                     //make add new label option visible
                 }
-              //  mNote.setmLabel(edittext.getText().toString()); //Testing
+                //  mNote.setmLabel(edittext.getText().toString()); //Testing
                 //mNote.setmLabel(s.toString());
             }
         });
 
     }
 
-    private ArrayList<String> initLabelData(){
-        usersLabels = new ArrayList<String>();
-        usersLabels.add("Personal");
-        usersLabels.add("Family");
-        usersLabels.add("C4Q");
-        usersLabels.add("Home");
-        usersLabels.add(0, "Create new");
-        return usersLabels;
-    }
+
 
     private void initListeners(){
         addNewButton.setOnClickListener(this);
