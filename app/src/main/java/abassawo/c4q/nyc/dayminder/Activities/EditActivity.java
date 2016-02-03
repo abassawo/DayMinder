@@ -34,10 +34,6 @@ public class EditActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setupActionBar();
         FragmentManager fm = getSupportFragmentManager();
-//
-//        UUID noteId = (UUID)getIntent()
-//                .getSerializableExtra(MainActivity.EXTRA_NOTE_ID);
-      //  fm.beginTransaction().add(NoteEditFragment.newInstance(noteId),TAG).commit();
         NoteEditFragment fragment = getNewNoteEditFragment();
         fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
@@ -48,23 +44,10 @@ public class EditActivity extends AppCompatActivity {
         UUID newID = note.getId();
         NoteEditFragment newNoteFrag  = NoteEditFragment.newInstance(newID);
         note.setTitle("");
-
         NotePad.get(getApplicationContext()).addNote(note);
-
-//        NotePad notePad = NotePad.get(getApplicationContext());
-//        notePad.addNote(note);
         return newNoteFrag;
     }
 
-    public static NoteEditFragment newInstance(UUID crimeId) {
-        Bundle args = new Bundle();
-        args.putSerializable(EXTRA_CRIME_ID, crimeId);
-
-        NoteEditFragment fragment = new NoteEditFragment();
-        fragment.setArguments(args);
-
-        return fragment;
-    }
 
     public void setupActionBar(){
         setSupportActionBar(toolbar);

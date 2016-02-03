@@ -20,7 +20,6 @@ public class Label{
     private String title;
 
     public Label(String title) {
-
         this.title = title;
     }
 

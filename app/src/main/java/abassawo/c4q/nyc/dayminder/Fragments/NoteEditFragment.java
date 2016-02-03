@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +19,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -81,24 +86,31 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
     ImageView imgView;
     @Bind(R.id.fab_reveal_layout)
     FABRevealLayout fabRevealLayout;
+    @Bind(R.id.fab_reveal_button)
+    FloatingActionButton fabRevealBtn;
     @Bind(R.id.rating_bar)
     RatingBar ratingBar;
     @Bind(R.id.label_identifier)
     TextView labelTV;
     private BottomSheet locationSheet, dateSheet, reminderSheet;
 
+    public boolean hasText(EditText et){
+        return et.getText().length() > 0;
+    }
 
     private void configureFABReveal(FABRevealLayout fabRevealLayout) {
-
         fabRevealLayout.setOnRevealChangeListener(new OnRevealChangeListener() {
             @Override
             public void onMainViewAppeared(FABRevealLayout fabRevealLayout, View mainView) {
-                //showMainViewItems();
+
             }
 
             @Override
             public void onSecondaryViewAppeared(final FABRevealLayout fabRevealLayout, View secondaryView) {
-                hideKeyboard();
+                if (hasText(edittext)) {
+                    hideKeyboard();
+                    dateSheet.show();
+                }
                 secondaryView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -121,6 +133,14 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         }, 200);
     }
 
+    public void configFabVisibility(){
+        if(!hasText(edittext)){
+            fabRevealBtn.setVisibility(View.INVISIBLE);
+        } else {
+            fabRevealBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_note_edit, container, false);
@@ -134,6 +154,7 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
             imgView.setImageURI(Uri.parse(mNote.getDrawable()));
             Glide.with(ctx).load(Uri.parse(mNote.getDrawable())).into(imgView);
         }
+       configFabVisibility();
             //imgView.setImageURI(Uri.parse(mNote.getDrawable()));
 
 
@@ -168,20 +189,16 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
                 switch (id) {
                     case R.id.current_time_reminder:
                         mNote.setReminderTime(new Date());
-                       // locationSheet.show();
                         break;
                     case R.id.custom_time:
+                        reminderSheet.dismiss();
                         showCustomTimePicker();
-                        //fm.beginTransaction().add(timeDialog, "TIME").commit();
                         break;
                     case R.id.no_timed_reminder:
-                        //taskList.add(mTask);
-                        //locationSheet.show();
                         break;
                 }
-                //  locationSheet.show();
-                Intent intent = new Intent(ctx, MainActivity.class);  //fixme
-                startActivity(intent);
+//                Intent intent = new Intent(ctx, MainActivity.class);  //fixme
+//                startActivity(intent);
             }
         }).build();
     }
@@ -192,29 +209,25 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         UUID noteId = (UUID) getArguments().getSerializable(EXTRA_NOTE_ID);
         mNote = NotePad.get(getActivity()).getNote(noteId);
         setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     public void setupDateSheets() {
-        // long id = cupboard().withDatabase(db).put(mTask);
         dateSheet = new BottomSheet.Builder(getActivity()).title("Due Date").sheet(R.menu.menu_date).listener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 switch (id) {
                     case R.id.today_item:
-                        mNote.setDueToday();
-                        // taskList.add(mTask);
+                        mNote.setDueToday(getContext());
                         Log.d(mNote.toString(), "due date test");
                         prepareBackTransition(fabRevealLayout);
                         reminderSheet.show();
-                        // startActivity(new Intent(EditActivity.this, MainActivity.class));
                         break;
                     case R.id.tomorrow:
                         mNote.setDueTomorrow(ctx); //setDueTomorrow fixme
-                        //taskList.add(mTask);
                         Log.d(mNote.toString(), "due date test");
                         prepareBackTransition(fabRevealLayout);
                         reminderSheet.show();
-                        //startActivity(new Intent(EditActivity.this, MainActivity.class));
                         break;
                     case R.id.choosedate:
                         dateSheet.dismiss();//testing
@@ -223,15 +236,13 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
                         int mYear = mcurrentDate.get(Calendar.YEAR);
                         int mMonth = mcurrentDate.get(Calendar.MONTH);
                         int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                        // fm.beginTransaction().add(dateDialog, "DATE").commit(); //open datepicker
                         reminderSheet.show();
                         break;
                     case R.id.nextweek:
                         mNote.setDueinOneWeek(ctx);
-                        Log.d(mNote.getDueDate().toString(), "due date test");
+                        Log.d("due date test", mNote.getDueDate().toString());
                         prepareBackTransition(fabRevealLayout);
                         reminderSheet.show();
-                        //startActivity(new Intent(EditActivity.this, MainActivity.class));
                         break;
                     default:
                         break;
@@ -263,20 +274,25 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
             }
         });
         edittext.setText(mNote.getTitle());
+
         edittext.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 mNote.setTitle(c.toString());
+                configFabVisibility();
+
             }
 
             @Override
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                configFabVisibility();
                 // left blank
             }
 
             @Override
             public void afterTextChanged(Editable c) {
+                configFabVisibility();
                 // left blank
             }
         });
@@ -380,11 +396,13 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         imgView.setImageDrawable(null);
         Glide.with(this).load(selectedImageUri).crossFade().fitCenter().into(imgView);
         mNote.setDrawable(selectedImageUri.toString());
-        //mTask.setUriStr(imageUri.toString());
-//        mTask.setUriStr(selectedImageUri.toString());
-//        mTask.setCustomPhoto(true);
+
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     private Intent createCameraIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -428,10 +446,7 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
         dpd.setThemeDark(true);
         dpd.vibrate(false);
         dpd.dismissOnPause(true);
-        // if (modeCustomAccentDate.isChecked()) {
         dpd.setAccentColor(Color.parseColor("#03A9F4"));
-
-        //}
         dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
 
 
@@ -447,11 +462,6 @@ public class NoteEditFragment extends Fragment implements View.OnClickListener,
 
         if (tpd != null) tpd.setOnTimeSetListener(this);
         if (dpd != null) dpd.setOnDateSetListener(this);
-
-//        if( (mTitle != null) && (isEmpty(edittext))){
-//            edittext.setText(mTitle);
-//        }
-
 
     }
 

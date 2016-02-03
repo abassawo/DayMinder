@@ -26,13 +26,22 @@ public class AccountFetcher {
     public static String getName(Context context) {
         Cursor CR = null;
         CR = getOwner(context);
-        String id = "", name = "";
+        String name = "";
+        String firstName, lastName;
+        String[] names = {"", ""};
         while (CR.moveToNext())
         {
             name = CR.getString(CR.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
         }
+        if(name.contains(".")){
+            firstName = name.substring(0, name.indexOf("."));
+            firstName = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1, firstName.length());
+            Log.d("NAME: first name", firstName);
+            lastName = name.substring(name.indexOf(".") + 1, name.length());
+            name = firstName + " " + lastName;
+        }
 
-        return name;
+        return name.toUpperCase();
     }
 
 
