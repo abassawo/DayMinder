@@ -1,6 +1,7 @@
 package abassawo.c4q.nyc.dayminder.Activities;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -26,9 +28,7 @@ import abassawo.c4q.nyc.dayminder.Adapters.ItemClickSupport;
 import abassawo.c4q.nyc.dayminder.Adapters.SimpleItemTouchHelperCallback;
 import abassawo.c4q.nyc.dayminder.Adapters.SwipeDismissRecyclerViewTouchListener;
 import abassawo.c4q.nyc.dayminder.Controllers.NotePad;
-import abassawo.c4q.nyc.dayminder.Adapters.FragAdapter;
 import abassawo.c4q.nyc.dayminder.Model.Note;
-import abassawo.c4q.nyc.dayminder.Model.User;
 import abassawo.c4q.nyc.dayminder.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,37 +43,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyclerView;
     private CustomRecyclerAdapter mAdapter;
     private List<Note> mItems;
-    private FragAdapter adapter;
-    public static List<Note>mNotes;
-    private User user;
+
 
     public static String EXTRA_NOTE_ID = "com.nyc.c4q.abassawo._id";
-    private boolean gridFrag = true;
-    private boolean firstRun;
+    private String GRID_LIST_PREF_KEY = "grid_list_preference";
+    private boolean gridDisplayBoolean = true;
 
-    private void initData(){
-        mItems = NotePad.get(this).getNotes();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initData();
-        initRV();
-        setupRecyclerView(recyclerView);
+        setupActionBar();
+        if(savedInstanceState != null){
+            gridDisplayBoolean = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(GRID_LIST_PREF_KEY, true);
+        }
+        setupRecyclerView(recyclerView, gridDisplayBoolean);
         updateUI();
-        initViews();
         setupDrawer(navView);
         initListeners();
+    }
+    public void setupActionBar(){
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void updateUI(){
+        NotePad notePad = NotePad.get(this);
+        List<Note>notes = notePad.getNotes();
+        if(mAdapter == null) {
+            mAdapter = new CustomRecyclerAdapter(notes);
+            recyclerView.setAdapter(mAdapter);
+        } else{
+            mAdapter.setItems(notes);
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 
-    private void initRV(){
+
+    public void setupRecyclerView(RecyclerView recyclerView, boolean gridOrList){
         mAdapter = new CustomRecyclerAdapter(this);
-    }
-    public void setupRecyclerView(RecyclerView recyclerView){
-        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mItems = NotePad.get(this).getNotes();
+        RecyclerView.LayoutManager layoutManager;
+        if(gridOrList == true) layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        else layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
@@ -87,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
-
 
         recyclerView.setAdapter(mAdapter);
 
@@ -118,26 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void updateUI(){
-        NotePad notePad = NotePad.get(this);
-        List<Note>notes = notePad.getNotes();
-        if(mAdapter == null) {
-            mAdapter = new CustomRecyclerAdapter(notes);
-            recyclerView.setAdapter(mAdapter);
-        } else{
-            mAdapter.setItems(notes);
-            mAdapter.notifyDataSetChanged();
-        }
-
-    }
 
 
-    public void initViews(){
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
 
     public void initListeners(){
         fab.setOnClickListener(this);
@@ -195,11 +193,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
-            case R.id.action_settings:
+            case R.id.toggle_grid_list:
+                toggleRecyclerView();
                 return true;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void toggleRecyclerView(){
+        if(gridDisplayBoolean == true) {
+            gridDisplayBoolean = false;
+        }else{
+            gridDisplayBoolean = true;
+        }
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putBoolean(GRID_LIST_PREF_KEY,gridDisplayBoolean).apply();
+        setupRecyclerView(recyclerView, gridDisplayBoolean);
     }
 
     @Override

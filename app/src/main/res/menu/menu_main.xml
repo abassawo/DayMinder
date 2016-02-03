@@ -7,7 +7,7 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/action_settings" android:title=""
+    <item android:id="@+id/toggle_grid_list" android:title=""
         android:icon="@drawable/ic_action_view_as_grid"
         android:orderInCategory="100" app:showAsAction="always"/>
 </menu>
